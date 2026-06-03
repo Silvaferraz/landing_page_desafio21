@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Container from '@/components/ui/Container'
 import CTAButton from '@/components/ui/CTAButton'
-import { siteConfig } from '@/lib/constants'
+import { siteConfig, ctaConfig } from '@/lib/constants'
 
 const NAV_LINKS = [
   { label: 'Home', href: '#hero' },
@@ -14,6 +14,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [progress, setProgress] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
@@ -21,6 +22,9 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0)
     }
 
     const handleResize = () => {
@@ -119,7 +123,7 @@ export default function Navbar() {
             </a>
           ))}
           <div data-cta="navbar-cta" data-cta-label="navbar-cta" data-cta-whatsapp="true">
-            <CTAButton href="#" size="small">
+            <CTAButton href={ctaConfig.whatsappLink} size="small">
               Quero Participar
             </CTAButton>
           </div>
@@ -166,13 +170,21 @@ export default function Navbar() {
               </a>
             ))}
             <div data-cta="navbar-cta-mobile" data-cta-label="navbar-cta-mobile" data-cta-whatsapp="true" className="mt-2 w-full">
-              <CTAButton href="#" className="w-full">
+              <CTAButton href={ctaConfig.whatsappLink} className="w-full">
                 Quero Participar
               </CTAButton>
             </div>
           </Container>
         </div>
       )}
+
+      {/* Scroll progress bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/10">
+        <div
+          className="h-full bg-neon-green transition-all duration-150 ease-out"
+          style={{ width: `${progress * 100}%` }}
+        />
+      </div>
     </header>
   )
 }

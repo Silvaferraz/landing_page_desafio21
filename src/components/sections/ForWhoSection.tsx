@@ -43,11 +43,10 @@ export default function ForWhoSection() {
               PARA QUEM E
             </Badge>
             <h2 className="heading-2 mb-4">
-              Este Desafio e para Voce
+              Este desafio é para você
             </h2>
             <p className="body-text text-white/90">
-              Se voce se identifica com algum dos perfis abaixo, o programa foi
-              criado pensando em voce e nas suas necessidades.
+              Mulher que acha que não tem tempo para treinar que não tem o acompanhamento necessário para alcançar seus objetivos.
             </p>
           </div>
         </AnimatedSection>

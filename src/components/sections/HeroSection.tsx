@@ -2,6 +2,7 @@ import Container from '@/components/ui/Container'
 import CTAButton from '@/components/ui/CTAButton'
 import Badge from '@/components/ui/Badge'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import { ctaConfig } from '@/lib/constants'
 
 const AVATAR_COUNT = 4
 
@@ -38,7 +39,7 @@ export default function HeroSection() {
               data-cta-label="hero-cta-principal"
               data-cta-whatsapp="true"
             >
-              <CTAButton href="#" variant="primary" size="large">
+              <CTAButton href={ctaConfig.whatsappLink} variant="primary" size="large">
                 Quero Participar
               </CTAButton>
             </div>

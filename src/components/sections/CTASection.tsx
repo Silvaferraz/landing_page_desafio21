@@ -10,7 +10,7 @@ import StaggerItem from '@/components/ui/StaggerItem'
 import { easeOut } from '@/lib/animations'
 import { ctaConfig } from '@/lib/constants'
 
-const AVATAR_COUNT = 4
+const AVATAR_COUNT = 3
 const filledPercent = Math.round(
   (ctaConfig.filledSpots / ctaConfig.totalSpots) * 100,
 )
@@ -103,7 +103,9 @@ export default function CTASection() {
                     <div
                       key={i}
                       className="h-8 w-8 rounded-full border-2 border-dark-blue bg-sky-blue/30"
-                    />
+                    >
+                      <img  />
+                    </div>
                   ))}
                 </div>
                 <span className="body-text text-sm text-white/80">

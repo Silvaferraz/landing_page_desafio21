@@ -5,23 +5,15 @@ import Badge from '@/components/ui/Badge'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { specialists, type Specialist } from '@/lib/constants'
 
-function InstagramIcon() {
+function SocialIcon({ src, alt }: { src: string; alt: string }) {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="2" y="2" width="20" height="20" rx="5" />
-      <circle cx="12" cy="12" r="5" />
-      <circle cx="17.5" cy="6.5" r="1.5" />
-    </svg>
+    <Image
+      src={src}
+      alt={alt}
+      width={25}
+      height={25}
+      className="object-contain"
+    />
   )
 }
 
@@ -62,22 +54,39 @@ function SpecialistCard({
 
           <h3 className="heading-3">{specialist.name}</h3>
 
-          <p className="label-text">{specialist.specialty}</p>
+          <p className="label-text text-deep-blue">{specialist.specialty}</p>
 
           <p className="body-text text-white/90">{specialist.bio}</p>
 
-          <a
-            href={specialist.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 inline-flex w-fit items-center gap-2 text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
-            aria-label={`Instagram da ${specialist.name}`}
-          >
-            <InstagramIcon />
-            <span className="font-century text-sm font-bold">
-              Seguir no Instagram
-            </span>
-          </a>
+          <div className="mt-1 flex items-center gap-3">
+            <a
+              href={specialist.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
+              aria-label={`Instagram da ${specialist.name}`}
+            >
+              <SocialIcon src="/images/instagram.webp" alt="Instagram" />
+            </a>
+            <a
+              href={specialist.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
+              aria-label={`WhatsApp da ${specialist.name}`}
+            >
+              <SocialIcon src="/images/whatsapp.webp" alt="WhatsApp" />
+            </a>
+            <a
+              href={specialist.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
+              aria-label={`Instagram da ${specialist.name}`}
+            >
+              <Image className="m-1" width={specialist.width} height={specialist.height} src={specialist.logo} alt="Logomarca" />
+            </a>
+          </div>
         </div>
       </GlassCard>
     </AnimatedSection>
@@ -100,10 +109,10 @@ export default function SpecialistsSection() {
             <Badge variant="accent" className="mb-4 inline-block">
               NOSSO TIME
             </Badge>
-            <h2 className="heading-2 mb-4">
+            <h2 className="heading-2 mb-4 text-deep-blue">
               Especialistas que Cuidam de Você
             </h2>
-            <p className="body-text text-white/90">
+            <p className="body-text text-dark-blue/80">
               Conheça a equipe multidisciplinar que vai acompanhar sua jornada
               de transformação com ciência, experiência e cuidado
               individualizado.

@@ -88,6 +88,10 @@ export interface Specialist {
   bio: string
   image: string
   instagram: string
+  whatsapp: string
+  logo: string
+  width: number
+  height: number
   badges: string[]
 }
 
@@ -95,28 +99,27 @@ export const specialists: Specialist[] = [
   {
     id: 'specialist-1',
     name: 'Selena Rossi',
-    specialty: 'Nutricionista Clínica',
-    bio: 'Especialista em nutrição feminina com mais de 10 anos de experiência. Referência em reeducação alimentar para mulheres que buscam saúde e bem-estar de forma sustentável.',
-    image: '/images/specialist-1.svg',
-    instagram: 'https://instagram.com/',
-    badges: ['CREF 038077-G/RS', 'Pós-graduada'],
+    specialty: 'Personal Trainer',
+    bio: 'Personal Trainer graduada pela UFSM e Especialista em Saúde da Mulher, Biomecânica e Reabilitação Musculoesquelética. Com mais de 5 anos de experiência, ajudei várias mulheres a alcançarem seus objetivos de saúde e bem-estar com programas personalizados e acompanhamento dedicado.',
+    image: '/images/selenaRossi.webp',
+    instagram: 'https://www.instagram.com/selenarossi_personal/',
+    whatsapp: 'https://wa.me/5555999501617',
+    logo: '/images/logo_selenaRossi.webp',
+    width: 90,
+    height: 90,
+    badges: ['CREF 038077-G/RS', 'Saúde da Mulher'],
   },
   {
     id: 'specialist-2',
-    name: 'Dra. Beatriz Santos',
-    specialty: 'Endocrinologista',
-    bio: 'Médica endocrinologista dedicada ao equilíbrio hormonal feminino. Abordagem integrativa que une ciência e cuidado individualizado para resultados duradouros.',
-    image: '/images/specialist-2.svg',
-    instagram: 'https://instagram.com/',
-    badges: ['CRM 54321', 'RQE 9876'],
-  },
-  {
-    id: 'specialist-3',
-    name: 'Dra. Carla Oliveira',
-    specialty: 'Psicóloga Comportamental',
-    bio: 'Psicóloga especializada em comportamento alimentar e saúde mental da mulher. Ajuda milhares de mulheres a desenvolverem uma relação saudável com o corpo e a comida.',
-    image: '/images/specialist-3.svg',
-    instagram: 'https://instagram.com/',
-    badges: ['CRP 67890', 'Mestre em Psicologia'],
+    name: 'Rafael Falk',
+    specialty: 'Nutricionista',
+    bio: 'Nutricionista graduado pela UFN especializando-se em Nutrição Esportiva e Estética. Trabalha com planos personalizados para melhorar desempenho, saúde e composição corporal, sempre com embasamento científico.',
+    image: '/images/rafaelFalk.webp',
+    instagram: 'https://www.instagram.com/rafa.falk/',
+    whatsapp: 'https://wa.me/5555996326861',
+    logo: '/images/logo_rafaelFalk.webp',
+    width: 110,
+    height: 110,
+    badges: ['CRN 54321', 'Nutrição Esportiva'],
   },
 ]

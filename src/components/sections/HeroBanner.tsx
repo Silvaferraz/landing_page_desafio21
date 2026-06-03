@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import CTAButton from '@/components/ui/CTAButton'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import { ctaConfig } from '@/lib/constants'
 
 export default function HeroBanner() {
   return (
@@ -11,7 +12,7 @@ export default function HeroBanner() {
       {/* Decorative background — crossing blue lines (transparent PNG) */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
         <img
-          src="/images/hero-bg-lines.png"
+          src="/images/hero-bg-lines.webp"
           alt=""
           className="h-full w-full object-cover opacity-40"
         />
@@ -24,14 +25,14 @@ export default function HeroBanner() {
             alt="Mulher saudável e confiante"
             width={500}
             height={667}
-            className="h-auto w-[280px] object-contain md:w-[400px] lg:w-[500px]"
+            className="h-auto w-[600px] object-contain md:w-[600px] lg:w-[800px]"
             priority
           />
         </AnimatedSection>
 
         <AnimatedSection variant="fade-up" delay={0.3} className="flex flex-wrap justify-center gap-4">
           <div data-cta="hero-cta-principal" data-cta-label="hero-cta-principal" data-cta-whatsapp="true">
-            <CTAButton href="#" variant="primary" size="large">
+            <CTAButton href={ctaConfig.whatsappLink} variant="primary" size="large">
               Quero Participar
             </CTAButton>
           </div>
