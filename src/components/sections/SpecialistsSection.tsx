@@ -88,7 +88,7 @@ export default function SpecialistsSection() {
   return (
     <section
       id="especialistas"
-      className="relative overflow-hidden bg-gradient-section py-16 md:py-24"
+      className="relative overflow-hidden py-16 md:py-24"
     >
       {/* Glow orbs */}
       <div className="pointer-events-none absolute -left-1/4 top-1/3 h-[400px] w-[400px] rounded-full bg-sky-blue/10 blur-[120px] md:h-[600px] md:w-[600px]" />

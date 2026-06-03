@@ -95,18 +95,17 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed left-0 right-0 top-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? 'border-b border-white/10 bg-dark-blue/80 shadow-glass backdrop-blur-glass'
-          : 'bg-transparent'
+      className={`fixed left-0 right-0 top-0 z-40 bg-dark-blue/80 shadow-glass backdrop-blur-glass transition-all duration-300 ${
+        scrolled ? 'border-b border-white/10' : ''
       }`}
     >
       <Container className="flex items-center justify-between py-4">
-        <a
-          href="#hero"
-          className="font-aileron text-2xl font-black text-white"
-        >
-          {siteConfig.name}
+        <a href="#hero" className="flex shrink-0 items-center">
+          <img
+            src={siteConfig.logo}
+            alt={siteConfig.name}
+            className="h-9 md:h-10 lg:h-20 w-auto"
+          />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">

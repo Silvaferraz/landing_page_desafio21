@@ -103,7 +103,7 @@ export default function TimelineSection() {
   return (
     <section
       id="cronograma"
-      className="relative overflow-hidden bg-gradient-section py-16 md:py-24"
+      className="relative overflow-hidden py-16 md:py-24"
     >
       {/* Glow orbs */}
       <div className="pointer-events-none absolute -right-1/4 top-1/4 h-[350px] w-[350px] rounded-full bg-sky-blue/10 blur-[120px] md:h-[500px] md:w-[500px]" />

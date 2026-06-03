@@ -31,7 +31,7 @@ export default function ForWhoSection() {
   return (
     <section
       id="para-quem-e"
-      className="relative overflow-hidden bg-gradient-section py-16 md:py-24"
+      className="relative overflow-hidden py-16 md:py-24"
     >
       <div className="pointer-events-none absolute -left-1/4 top-1/3 h-[300px] w-[300px] rounded-full bg-sky-blue/10 blur-[120px] md:h-[500px] md:w-[500px]" />
       <div className="pointer-events-none absolute -bottom-1/4 right-0 h-[200px] w-[200px] rounded-full bg-deep-blue/20 blur-[100px] md:h-[400px] md:w-[400px]" />

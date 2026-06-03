@@ -72,12 +72,13 @@ export const forWhoData: ForWhoItem[] = [
 export const ctaConfig = {
   totalSpots: 50,
   filledSpots: 42,
-  whatsappLink: '#',
+  whatsappLink: 'https://chat.whatsapp.com/LTtLly0QSHzGQl5Gqclsf2?s=cl&p=i&ilr=2',
 }
 
 export const siteConfig = {
-  name: '[Nome do Desafio]',
+  name: 'Desafio 21 dias por você',
   domain: 'https://example.com.br',
+  logo: '/images/logo6.webp',
 }
 
 export interface Specialist {
@@ -93,12 +94,12 @@ export interface Specialist {
 export const specialists: Specialist[] = [
   {
     id: 'specialist-1',
-    name: 'Dra. Ana Silva',
+    name: 'Selena Rossi',
     specialty: 'Nutricionista Clínica',
     bio: 'Especialista em nutrição feminina com mais de 10 anos de experiência. Referência em reeducação alimentar para mulheres que buscam saúde e bem-estar de forma sustentável.',
     image: '/images/specialist-1.svg',
     instagram: 'https://instagram.com/',
-    badges: ['CRN 12345', 'Pós-graduada'],
+    badges: ['CREF 038077-G/RS', 'Pós-graduada'],
   },
   {
     id: 'specialist-2',

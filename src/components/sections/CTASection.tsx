@@ -20,7 +20,7 @@ export default function CTASection() {
     <section
       id="cta"
       data-section="cta"
-      className="relative overflow-hidden bg-gradient-section py-16 md:py-24"
+      className="relative overflow-hidden py-16 md:py-24"
     >
       {/* Glow orbs */}
       <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-sky-blue/10 blur-[140px] md:h-[700px] md:w-[700px]" />
