@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, type TargetAndTransition } from 'framer-motion'
 import type { AnimationVariant } from '@/lib/animations'
 import { animationVariants } from '@/lib/animations'
 
@@ -28,13 +28,14 @@ function resolveVariants(
   }
 
   const base = animationVariants[variant]
+  const visibleState = base.visible as TargetAndTransition
 
   return {
     hidden: base.hidden,
     visible: {
-      ...base.visible,
+      ...visibleState,
       transition: {
-        ...base.visible.transition,
+        ...(visibleState.transition || {}),
         delay: delay > 0 ? delay : undefined,
         duration: duration ?? undefined,
       },
