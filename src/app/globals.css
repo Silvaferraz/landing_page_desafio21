@@ -43,4 +43,32 @@
   .touch-target {
     @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
   }
+
+  .heading-1 {
+    @apply font-aileron font-black text-[clamp(32px,6vw,72px)] leading-tight text-white;
+  }
+
+  .heading-2 {
+    @apply font-aileron font-black text-[clamp(28px,5vw,56px)] leading-tight text-white;
+  }
+
+  .heading-3 {
+    @apply font-century font-bold text-[clamp(22px,3vw,40px)] leading-snug text-white;
+  }
+
+  .heading-4 {
+    @apply font-century font-bold text-[clamp(18px,2.5vw,28px)] leading-snug text-white;
+  }
+
+  .body-text {
+    @apply font-century font-normal text-base md:text-lg text-white/80;
+  }
+
+  .label-text {
+    @apply font-century font-bold text-sm uppercase tracking-widest text-sky-blue;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
 }

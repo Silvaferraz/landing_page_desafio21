@@ -21,27 +21,44 @@ Itens pendentes:
 - Nenhum.
 
 ## Fase 2 - Bootstrap do Projeto
-Status: Nao iniciada
+Status: Concluida
 
 Itens concluidos:
-- Nenhum.
+- TypeScript configurado (`tsconfig.json` com `strict: true`).
+- Tailwind configurado (`tailwind.config.ts` com cores, fontes, gradientes, sombras, animacoes).
+- Aliases configurados (`@/*` em `tsconfig.json`).
+- `next.config.ts` configurado (`output: export`, `trailingSlash: true`, `images.unoptimized: true`).
+- `globals.css` configurado (tokens CSS, `.glass`, `.btn-cta`, `.touch-target`).
+- `layout.tsx` criado com `localFont`, metadata base e fontes configuradas.
+- `src/app/page.tsx` criado (entry point minimalista).
+- `src/lib/constants.ts` criado com `siteConfig`.
+- `package.json` criado com dependencias Next.js 14, React 18, Tailwind, Framer Motion.
+- `postcss.config.mjs` criado com `tailwindcss` e `autoprefixer`.
+- `.gitignore` criado.
+- `next-env.d.ts` criado.
+- Diretorios criados: `src/fonts/`, `src/components/{layout,sections,ui,analytics,lgpd}/`, `src/context/`, `public/`, `src/app/politica-de-privacidade/`, `src/app/termos-de-uso/`.
 
 Itens pendentes:
-- Criar estrutura de diretorios.
-- Criar arquivos vazios.
-- Configurar TypeScript, Tailwind, aliases, next.config.ts, globals.css.
-- Configurar fontes locais e constantes.
+- Arquivos de fonte (.woff2) em `src/fonts/` — dependencia externa (designer). Necessario fornecer: `aileron-heavy.woff2`, `century-gothic.woff2`, `century-gothic-bold.woff2`.
 
 ## Fase 3 - Design System
-Status: Nao iniciada
+Status: Concluida
 
 Itens concluidos:
-- Nenhum.
+- `Container` criado em `src/components/ui/Container.tsx`.
+- `GlassCard` criado em `src/components/ui/GlassCard.tsx`.
+- `SectionTitle` criado em `src/components/ui/SectionTitle.tsx`.
+- `Badge` criado em `src/components/ui/Badge.tsx`.
+- `CTAButton` criado em `src/components/ui/CTAButton.tsx` (variantes: primary, secondary, outline; tamanhos: small, default, large).
+- `SocialButton` criado em `src/components/ui/SocialButton.tsx`.
+- `StickyCTA` criado em `src/components/ui/StickyCTA.tsx` (client component com scroll detection).
+- Classes utilitarias adicionadas ao `globals.css`: `.heading-1`, `.heading-2`, `.heading-3`, `.heading-4`, `.body-text`, `.label-text`, `.section-padding`.
+- Tipografia global implementada com clamp responsivo.
+- Glassmorphism e gradientes ja configurados na Fase 2.
+- `docs/COMPONENTS.md` criado com documentacao completa de todos os componentes.
 
 Itens pendentes:
-- Implementar componentes base (CTAButton, GlassCard, SocialButton, Container, SectionTitle, Badge, StickyCTA).
-- Implementar classes utilitarias, glassmorphism, gradientes, tipografia e animacoes globais.
-- Criar `docs/COMPONENTS.md`.
+- Nenhum.
 
 ## Fase 4 - Sistema de Animacoes
 Status: Nao iniciada
