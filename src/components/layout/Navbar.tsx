@@ -72,9 +72,11 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <CTAButton href="#" size="small">
-            Quero Participar
-          </CTAButton>
+          <div data-cta="navbar-cta" data-cta-label="navbar-cta" data-cta-whatsapp="true">
+            <CTAButton href="#" size="small">
+              Quero Participar
+            </CTAButton>
+          </div>
         </nav>
 
         <button
@@ -116,9 +118,11 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
-            <CTAButton href="#" className="mt-2 w-full">
-              Quero Participar
-            </CTAButton>
+            <div data-cta="navbar-cta-mobile" data-cta-label="navbar-cta-mobile" data-cta-whatsapp="true" className="mt-2 w-full">
+              <CTAButton href="#" className="w-full">
+                Quero Participar
+              </CTAButton>
+            </div>
           </Container>
         </div>
       )}

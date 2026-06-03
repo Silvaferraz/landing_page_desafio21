@@ -2,6 +2,12 @@ import localFont from 'next/font/local'
 import type { Metadata, Viewport } from 'next'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
+import {
+  CookieConsentProvider,
+  ConsentAnalyticsGate,
+} from '@/context/CookieConsentContext'
+import CookieBanner from '@/components/lgpd/CookieBanner'
+import CookieModal from '@/components/lgpd/CookieModal'
 import './globals.css'
 
 const aileron = localFont({
@@ -35,14 +41,56 @@ const centuryGothic = localFont({
   preload: true,
 })
 
+const siteUrl = 'https://example.com.br'
+const siteName = 'Desafio Saude Feminina'
+const siteDescription =
+  'Transforme sua saude com acompanhamento especializado. Programa intensivo de 12 semanas para mulheres que desejam recuperar o controle da saude com resultados reais.'
+const ogImage = `${siteUrl}/og-image.jpg`
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://example.com.br'),
+  metadataBase: new URL(siteUrl),
   title: {
-    default: '[Nome do Desafio] | [Beneficio Principal] para Mulheres',
-    template: '%s | [Nome do Desafio]',
+    default: `${siteName} | Transforme Sua Saude em 12 Semanas`,
+    template: `%s | ${siteName}`,
   },
-  description:
-    '[Descricao de 150-160 caracteres com keyword principal e beneficio claro]',
+  description: siteDescription,
+  keywords: [
+    'saude feminina',
+    'emagrecimento saudavel',
+    'equilibrio hormonal',
+    'desafio saude',
+    'acompanhamento nutricional',
+    'transformacao feminina',
+    'programa de saude para mulheres',
+  ],
+  authors: [{ name: siteName }],
+  creator: siteName,
+  publisher: siteName,
+  alternates: {
+    canonical: siteUrl,
+  },
+  openGraph: {
+    title: siteName,
+    description: siteDescription,
+    url: siteUrl,
+    siteName: siteName,
+    images: [
+      {
+        url: ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteName,
+      },
+    ],
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteName,
+    description: siteDescription,
+    images: [ogImage],
+  },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -74,9 +122,58 @@ export default function RootLayout({
         >
           Pular para o conteudo
         </a>
-        <Navbar />
-        <main id="main-content">{children}</main>
-        <Footer />
+
+        {/* JSON-LD — Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  '@id': `${siteUrl}/#organization`,
+                  name: siteName,
+                  url: siteUrl,
+                  logo: `${siteUrl}/favicon.svg`,
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': `${siteUrl}/#website`,
+                  url: siteUrl,
+                  name: siteName,
+                  description: siteDescription,
+                  publisher: { '@id': `${siteUrl}/#organization` },
+                },
+                {
+                  '@type': 'LocalBusiness',
+                  '@id': `${siteUrl}/#localbusiness`,
+                  name: siteName,
+                  url: siteUrl,
+                  description: siteDescription,
+                  image: ogImage,
+                  telephone: '+55XXXXXXXXXXX',
+                  address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: 'Brasil',
+                    addressCountry: 'BR',
+                  },
+                  priceRange: '$$',
+                },
+              ],
+            }),
+          }}
+        />
+
+        <CookieConsentProvider>
+          <Navbar />
+          <main id="main-content">{children}</main>
+          <Footer />
+
+          <ConsentAnalyticsGate />
+          <CookieBanner />
+          <CookieModal />
+        </CookieConsentProvider>
       </body>
     </html>
   )

@@ -69,6 +69,12 @@ export const forWhoData: ForWhoItem[] = [
   },
 ]
 
+export const ctaConfig = {
+  totalSpots: 50,
+  filledSpots: 42,
+  whatsappLink: '#',
+}
+
 export const siteConfig = {
   name: '[Nome do Desafio]',
   domain: 'https://example.com.br',

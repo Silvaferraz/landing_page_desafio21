@@ -53,12 +53,16 @@ export default function HeroSection() {
 
             <AnimatedSection variant="fade-up" delay={0.4}>
               <div className="flex flex-wrap gap-4">
-                <CTAButton href="#" variant="primary" size="large">
-                  Quero Participar
-                </CTAButton>
-                <CTAButton href="#especialistas" variant="outline" size="large">
-                  Saiba Mais
-                </CTAButton>
+                <div data-cta="hero-cta-principal" data-cta-label="hero-cta-principal" data-cta-whatsapp="true">
+                  <CTAButton href="#" variant="primary" size="large">
+                    Quero Participar
+                  </CTAButton>
+                </div>
+                <div data-cta="hero-cta-secundario" data-cta-label="hero-cta-secundario">
+                  <CTAButton href="#especialistas" variant="outline" size="large">
+                    Saiba Mais
+                  </CTAButton>
+                </div>
               </div>
             </AnimatedSection>
 
