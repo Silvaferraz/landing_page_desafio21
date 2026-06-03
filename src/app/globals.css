@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-deep-blue: #0B008A;
+    --color-neon-green: #99FF00;
+    --color-sky-blue: #67AFFF;
+    --color-dark: #06004A;
+    --glass-bg: rgba(255, 255, 255, 0.07);
+    --glass-border: rgba(255, 255, 255, 0.15);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/[0.07] backdrop-blur-glass border border-white/15 shadow-glass;
+  }
+
+  .glass-light {
+    @apply bg-white/[0.12] backdrop-blur-glass border border-white/20 shadow-glass;
+  }
+
+  .btn-cta {
+    @apply bg-gradient-cta text-black font-century font-bold
+      rounded-full px-10 py-5 text-lg
+      transition-all duration-300
+      hover:scale-105 hover:shadow-neon
+      animate-pulse-cta;
+  }
+
+  .touch-target {
+    @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
+  }
+}
