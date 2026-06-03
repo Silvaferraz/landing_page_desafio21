@@ -61,15 +61,20 @@ Itens pendentes:
 - Nenhum.
 
 ## Fase 4 - Sistema de Animacoes
-Status: Nao iniciada
+Status: Concluida
 
 Itens concluidos:
-- Nenhum.
+- `src/lib/animations.ts` criado com variantes centralizadas: fade-up, fade-left, fade-right, fade-scale, fade-in, staggerContainer.
+- `AnimatedSection` criado em `src/components/ui/AnimatedSection.tsx` (scroll-triggered, variants, delay, duration, threshold, once, prefers-reduced-motion).
+- `StaggerContainer` criado em `src/components/ui/StaggerContainer.tsx` (staggerChildren, delayChildren, prefers-reduced-motion, fallback para div sem JS).
+- `StaggerItem` criado em `src/components/ui/StaggerItem.tsx` (variants individuais, prefers-reduced-motion).
+- Todos os componentes usam `'use client'` e `useReducedMotion()` do Framer Motion.
+- Variantes usam apenas `transform` e `opacity` (GPU acelerado, sem layout shift).
+- Easing custom `[0.16, 1, 0.3, 1]` conforme Design System.
+- `docs/ANIMATIONS.md` criado com arquitetura, props, variantes, exemplos, guidelines de performance e integracao com Framer Motion.
 
 Itens pendentes:
-- Criar AnimatedSection, StaggerContainer, StaggerItem.
-- Implementar variantes de animacao.
-- Criar `docs/ANIMATIONS.md`.
+- Nenhum.
 
 ## Fase 5 - Layout Global
 Status: Nao iniciada
