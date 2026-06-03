@@ -112,7 +112,9 @@ export default function Navbar() {
             width={160}
             height={80}
             className="h-9 w-auto md:h-10 lg:h-20"
+            sizes="(max-width: 768px) 160px, 320px"
             priority
+            fetchPriority="high"
           />
         </a>
 

@@ -13,6 +13,7 @@ function SocialIcon({ src, alt }: { src: string; alt: string }) {
       width={25}
       height={25}
       className="object-contain"
+      loading="lazy"
     />
   )
 }
@@ -40,6 +41,7 @@ function SpecialistCard({
             fill
             className="object-contain"
             sizes="(max-width: 768px) 100vw, 260px"
+            loading="lazy"
           />
         </div>
 
@@ -84,7 +86,7 @@ function SpecialistCard({
               className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
               aria-label={`Instagram da ${specialist.name}`}
             >
-              <Image className="" width={specialist.width} height={specialist.height} src={specialist.logo} alt="Logomarca" />
+              <Image className="" width={specialist.width} height={specialist.height} src={specialist.logo} alt="Logomarca" loading="lazy" />
             </a>
           </div>
         </div>

@@ -168,10 +168,14 @@ export function ConsentAnalyticsGate() {
 
   return (
     <>
-      <GTMScript consent={analytics || marketing} />
-      <MetaPixel consent={marketing} />
-      <ScrollTracker />
-      <ClickTracker />
+      {(analytics || marketing) && <GTMScript consent={analytics || marketing} />}
+      {marketing && <MetaPixel consent={marketing} />}
+      {consent.status !== 'pending' && (
+        <>
+          <ScrollTracker />
+          <ClickTracker />
+        </>
+      )}
     </>
   )
 }

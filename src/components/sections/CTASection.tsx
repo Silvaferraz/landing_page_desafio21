@@ -135,6 +135,7 @@ export default function CTASection() {
                         width={32}
                         height={32}
                         className="h-full w-full object-cover"
+                        loading="lazy"
                       />
                     </div>
                   ))}

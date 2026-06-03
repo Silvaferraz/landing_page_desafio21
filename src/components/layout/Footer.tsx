@@ -12,7 +12,7 @@ export default function Footer() {
       <Container>
         <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
           <span className="font-aileron text-2xl font-black text-white">
-            <Image src="/images/logo6.webp" alt="Logo do Footer" width={200} height={200} />
+            <Image src="/images/logo6.webp" alt="Logo do Footer" width={200} height={200} loading="lazy" />
           </span>
 
           <nav className="flex flex-wrap items-center gap-6">
@@ -40,7 +40,7 @@ export default function Footer() {
             className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-neon-green"
             aria-label="Instagram Selena Rossi"
           >
-            <Image src="/images/instagram.webp" alt="" width={28} height={28} className="h-7 w-7" />
+            <Image src="/images/instagram.webp" alt="" width={28} height={28} className="h-7 w-7" loading="lazy" />
           </a>
           <a
             href={selena.whatsapp}
@@ -49,7 +49,7 @@ export default function Footer() {
             className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-neon-green"
             aria-label="WhatsApp Selena Rossi"
           >
-            <Image src="/images/whatsapp.webp" alt="" width={28} height={28} className="h-7 w-7" />
+            <Image src="/images/whatsapp.webp" alt="" width={28} height={28} className="h-7 w-7" loading="lazy" />
           </a>
         </div>
 

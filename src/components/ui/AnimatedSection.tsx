@@ -60,8 +60,9 @@ export default function AnimatedSection({
       variants={variants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, amount: threshold }}
+      viewport={{ once, amount: threshold, margin: '0px 0px -50px 0px' }}
       className={className}
+      style={{ willChange: prefersReducedMotion ? 'auto' : 'transform, opacity' }}
     >
       {children}
     </motion.div>
