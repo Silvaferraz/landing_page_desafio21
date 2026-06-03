@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import Container from '@/components/ui/Container'
 import CTAButton from '@/components/ui/CTAButton'
 import { siteConfig, ctaConfig } from '@/lib/constants'
@@ -105,10 +106,13 @@ export default function Navbar() {
     >
       <Container className="flex items-center justify-between py-4">
         <a href="#hero" className="flex shrink-0 items-center">
-          <img
+          <Image
             src={siteConfig.logo}
             alt={siteConfig.name}
-            className="h-9 md:h-10 lg:h-20 w-auto"
+            width={160}
+            height={80}
+            className="h-9 w-auto md:h-10 lg:h-20"
+            priority
           />
         </a>
 

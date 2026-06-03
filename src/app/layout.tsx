@@ -43,10 +43,10 @@ const centuryGothic = localFont({
 })
 
 const siteUrl = siteConfig.domain
-const siteName = 'Desafio Saude Feminina'
+const siteName = 'Desafio 21 dias por você'
 const siteDescription =
-  'Transforme sua saude com acompanhamento especializado. Programa intensivo de 12 semanas para mulheres que desejam recuperar o controle da saude com resultados reais.'
-const ogImage = `${siteUrl}/og-image.jpg`
+  'Transforme sua saude com acompanhamento especializado. Programa intensivo de 3 semanas para mulheres que desejam recuperar o controle da saúde com resultados reais.'
+const ogImage = `${siteUrl}/images/logo1.webp`
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

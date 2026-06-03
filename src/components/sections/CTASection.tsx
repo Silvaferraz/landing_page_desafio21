@@ -1,21 +1,43 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import Container from '@/components/ui/Container'
 import CTAButton from '@/components/ui/CTAButton'
 import Badge from '@/components/ui/Badge'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import StaggerContainer from '@/components/ui/StaggerContainer'
 import StaggerItem from '@/components/ui/StaggerItem'
-import { easeOut } from '@/lib/animations'
 import { ctaConfig } from '@/lib/constants'
+import Image from 'next/image'
 
-const AVATAR_COUNT = 3
-const filledPercent = Math.round(
-  (ctaConfig.filledSpots / ctaConfig.totalSpots) * 100,
-)
+const AVATAR_IMAGES = [
+  '/images/hero-avatar-1.jpg',
+  '/images/hero-avatar-2.jpg',
+  '/images/hero-avatar-3.jpg',
+]
+
+const CHALLENGE_START = new Date('2026-06-24T00:00:00-03:00')
+
+function getTimeRemaining() {
+  const now = new Date()
+  const diff = CHALLENGE_START.getTime() - now.getTime()
+  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((diff / (1000 * 60)) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+  }
+}
 
 export default function CTASection() {
+  const [time, setTime] = useState(getTimeRemaining)
+
+  useEffect(() => {
+    const id = setInterval(() => setTime(getTimeRemaining()), 1000)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <section
       id="cta"
@@ -45,31 +67,34 @@ export default function CTASection() {
           {/* Subheadline */}
           <AnimatedSection variant="fade-up" delay={0.3}>
             <p className="body-text mx-auto mb-2 max-w-xl text-white/90">
-              As vagas sao limitadas para garantir atendimento individualizado
+              As vagas são limitadas para garantir atendimento individualizado
               de alta qualidade. Garanta a sua e comece sua jornada de
-              transformacao.
+              transformação.
             </p>
           </AnimatedSection>
 
-          {/* Vaga bar */}
+          {/* Countdown */}
           <AnimatedSection variant="fade-up" delay={0.35}>
             <div className="glass mx-auto mb-10 mt-8 max-w-md rounded-2xl p-6 md:p-8">
-              <div className="mb-3 flex items-center justify-between">
-                <span className="label-text text-xs">
-                  VAGAS PREENCHIDAS
-                </span>
-                <span className="font-century text-lg font-bold text-white">
-                  {ctaConfig.filledSpots}/{ctaConfig.totalSpots}
-                </span>
-              </div>
-              <div className="h-3 w-full overflow-hidden rounded-full bg-white/10">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-sky-blue to-neon-green"
-                  initial={{ width: '0%' }}
-                  whileInView={{ width: `${filledPercent}%` }}
-                  transition={{ duration: 1.5, ease: easeOut }}
-                  viewport={{ once: true }}
-                />
+              <span className="label-text mb-4 block text-center text-xs">
+                O DESAFIO COMEÇA EM
+              </span>
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  { label: 'DIAS', value: time.days },
+                  { label: 'HORAS', value: time.hours },
+                  { label: 'MIN', value: time.minutes },
+                  { label: 'SEG', value: time.seconds },
+                ].map((item) => (
+                  <div key={item.label} className="flex flex-col items-center">
+                    <span className="font-aileron text-3xl font-black text-white md:text-4xl">
+                      {String(item.value).padStart(2, '0')}
+                    </span>
+                    <span className="label-text mt-1 text-[10px]">
+                      {item.label}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </AnimatedSection>
@@ -99,12 +124,18 @@ export default function CTASection() {
             <StaggerItem>
               <div className="flex items-center justify-center gap-3">
                 <div className="flex -space-x-2" aria-hidden="true">
-                  {Array.from({ length: AVATAR_COUNT }, (_, i) => (
+                  {AVATAR_IMAGES.map((src, i) => (
                     <div
                       key={i}
-                      className="h-8 w-8 rounded-full border-2 border-dark-blue bg-sky-blue/30"
+                      className="h-8 w-8 overflow-hidden rounded-full border-2 border-white"
                     >
-                      <img  />
+                      <Image
+                        src={src}
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                   ))}
                 </div>
@@ -119,7 +150,7 @@ export default function CTASection() {
               <div className="flex flex-wrap justify-center gap-3">
                 <Badge variant="primary">Pagamento Seguro</Badge>
                 <Badge variant="primary">Suporte 24h</Badge>
-                <Badge variant="primary">7 Dias de Garantia</Badge>
+                <Badge variant="primary">Comunidade ativa</Badge>
               </div>
             </StaggerItem>
           </StaggerContainer>
@@ -127,7 +158,7 @@ export default function CTASection() {
           {/* Closing note */}
           <AnimatedSection variant="fade-in" delay={0.9}>
             <p className="mt-12 text-sm text-white/40">
-              Ultimas vagas disponiveis. Proximas inscricoes so daqui 3 meses.
+              Ultimas vagas disponiveis.
             </p>
           </AnimatedSection>
         </div>

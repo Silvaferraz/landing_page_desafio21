@@ -104,7 +104,7 @@ export default function CookieModal() {
           <div className="flex items-center justify-between rounded-lg bg-white/5 p-4">
             <div>
               <span className="font-century font-bold text-white">
-                Necessarios
+                Necessários
               </span>
               <p className="text-xs text-white/60">Sempre ativos</p>
             </div>
@@ -117,7 +117,6 @@ export default function CookieModal() {
               <span className="font-century font-bold text-white">
                 Analytics
               </span>
-              <p className="text-xs text-white/60">Google Analytics e GTM</p>
             </div>
             <button
               role="switch"
@@ -142,7 +141,6 @@ export default function CookieModal() {
               <span className="font-century font-bold text-white">
                 Marketing
               </span>
-              <p className="text-xs text-white/60">Meta Pixel e campanhas</p>
             </div>
             <button
               role="switch"

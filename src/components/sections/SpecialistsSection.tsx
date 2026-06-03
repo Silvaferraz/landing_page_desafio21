@@ -38,7 +38,7 @@ function SpecialistCard({
             src={specialist.image}
             alt={`Foto da ${specialist.name} — ${specialist.specialty}`}
             fill
-            className="object-cover"
+            className="object-contain"
             sizes="(max-width: 768px) 100vw, 260px"
           />
         </div>
@@ -84,7 +84,7 @@ function SpecialistCard({
               className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
               aria-label={`Instagram da ${specialist.name}`}
             >
-              <Image className="m-1" width={specialist.width} height={specialist.height} src={specialist.logo} alt="Logomarca" />
+              <Image className="" width={specialist.width} height={specialist.height} src={specialist.logo} alt="Logomarca" />
             </a>
           </div>
         </div>

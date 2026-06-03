@@ -31,9 +31,13 @@ export default function CTAButton({
   variant = 'primary',
   size = 'default',
 }: CTAButtonProps) {
+  const isExternal = href.startsWith('http')
+
   return (
     <a
       href={href}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
       className={`touch-target inline-flex items-center justify-center ${variants[variant]} ${sizes[size]} ${className}`}
     >
       {children}

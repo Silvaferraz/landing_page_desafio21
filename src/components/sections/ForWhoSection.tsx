@@ -7,6 +7,7 @@ import StaggerContainer from '@/components/ui/StaggerContainer'
 import StaggerItem from '@/components/ui/StaggerItem'
 import { forWhoData, type ForWhoItem } from '@/lib/constants'
 
+
 function ForWhoCard({
   item,
   index,
@@ -15,13 +16,11 @@ function ForWhoCard({
   index: number
 }) {
   return (
-    <GlassCard className="flex items-start gap-4 md:gap-5">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-blue to-deep-blue font-aileron font-black text-lg text-white shadow-lg shadow-sky-blue/30">
-        {String(index + 1).padStart(2, '0')}
-      </div>
+    <GlassCard className="flex items-start gap-4 md:gap-5 bg-white">
+      <Image src={item.icon} width={50} height={50} alt="Icone" />
       <div className="flex flex-col gap-1.5">
-        <h3 className="heading-4">{item.title}</h3>
-        <p className="body-text text-white/90">{item.description}</p>
+        <h3 className="heading-4 text-deep-blue/90">{item.title}</h3>
+        <p className="body-text text-deep-blue/90">{item.description}</p>
       </div>
     </GlassCard>
   )
@@ -40,13 +39,13 @@ export default function ForWhoSection() {
         <AnimatedSection variant="fade-up" delay={0.1}>
           <div className="mx-auto mb-12 max-w-2xl text-center md:mb-16">
             <Badge variant="accent" className="mb-4 inline-block">
-              PARA QUEM E
+              PARA QUEM É
             </Badge>
             <h2 className="heading-2 mb-4">
               Este desafio é para você
             </h2>
             <p className="body-text text-white/90">
-              Mulher que acha que não tem tempo para treinar que não tem o acompanhamento necessário para alcançar seus objetivos.
+              Mulher que acha que não tem tempo para treinar e que não tem o acompanhamento necessário para alcançar seus objetivos.
             </p>
           </div>
         </AnimatedSection>
@@ -57,11 +56,11 @@ export default function ForWhoSection() {
               <div className="absolute -inset-4 rounded-full bg-gradient-hero opacity-30 blur-3xl" />
               <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white/5">
                 <Image
-                  src="/images/for-who.svg"
+                  src="/images/selenaRossi.webp"
                   alt="Mulheres que o desafio atende"
                   fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain"
+                  sizes="(max-width: 508px) 100vw, 50vw"
                 />
               </div>
             </div>

@@ -19,7 +19,7 @@ export default function CookieBanner() {
           Utilizamos cookies para melhorar sua experiencia. Ao continuar, voce
           concorda com nossa{' '}
           <a
-            href="#"
+             href="/politica-de-privacidade"
             className="underline hover:text-neon-green focus-visible:outline-2 focus-visible:outline-neon-green"
           >
             Politica de Privacidade

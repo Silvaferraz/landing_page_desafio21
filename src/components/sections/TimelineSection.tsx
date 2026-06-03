@@ -119,7 +119,7 @@ export default function TimelineSection() {
               Como Funciona o Programa
             </h2>
             <p className="body-text text-white/90">
-              Um cronograma estruturado em 12 semanas, dividido em etapas
+              Um cronograma estruturado em 3 semanas, dividido em etapas
               progressivas para garantir resultados seguros e duradouros.
             </p>
           </div>
