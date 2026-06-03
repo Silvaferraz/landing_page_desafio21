@@ -8,7 +8,7 @@ import {
   useCallback,
   type ReactNode,
 } from 'react'
-import { setConsentChecker, setMarketingConsentChecker } from '@/lib/analytics'
+import { setConsentChecker, setMarketingConsentChecker, trackPageView } from '@/lib/analytics'
 import GTMScript from '@/components/analytics/GTMScript'
 import MetaPixel from '@/components/analytics/MetaPixel'
 import ScrollTracker from '@/components/analytics/ScrollTracker'
@@ -40,11 +40,24 @@ const defaultConsent: CookieConsent = {
   marketing: false,
 }
 
+function isValidConsent(data: unknown): data is CookieConsent {
+  if (!data || typeof data !== 'object') return false
+  const obj = data as Record<string, unknown>
+  return (
+    (obj.status === 'pending' || obj.status === 'accepted' || obj.status === 'rejected') &&
+    typeof obj.analytics === 'boolean' &&
+    typeof obj.marketing === 'boolean'
+  )
+}
+
 function loadConsent(): CookieConsent {
   if (typeof window === 'undefined') return defaultConsent
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) return JSON.parse(stored) as CookieConsent
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      if (isValidConsent(parsed)) return parsed
+    }
   } catch {
     /* ignore */
   }
@@ -146,6 +159,12 @@ export function ConsentAnalyticsGate() {
   const { consent } = useCookieConsent()
   const analytics = consent.status !== 'pending' && consent.analytics
   const marketing = consent.status !== 'pending' && consent.marketing
+
+  useEffect(() => {
+    if (consent.status !== 'pending' && consent.analytics) {
+      trackPageView()
+    }
+  }, [consent.status, consent.analytics])
 
   return (
     <>

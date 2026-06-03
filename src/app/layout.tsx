@@ -8,6 +8,7 @@ import {
 } from '@/context/CookieConsentContext'
 import CookieBanner from '@/components/lgpd/CookieBanner'
 import CookieModal from '@/components/lgpd/CookieModal'
+import { siteConfig } from '@/lib/constants'
 import './globals.css'
 
 const aileron = localFont({
@@ -41,7 +42,7 @@ const centuryGothic = localFont({
   preload: true,
 })
 
-const siteUrl = 'https://example.com.br'
+const siteUrl = siteConfig.domain
 const siteName = 'Desafio Saude Feminina'
 const siteDescription =
   'Transforme sua saude com acompanhamento especializado. Programa intensivo de 12 semanas para mulheres que desejam recuperar o controle da saude com resultados reais.'

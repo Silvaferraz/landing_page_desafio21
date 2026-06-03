@@ -68,7 +68,7 @@ export default function HeroSection() {
 
             <AnimatedSection variant="fade-up" delay={0.5}>
               <div className="glass flex w-fit items-center gap-3 rounded-full px-6 py-3">
-                <div className="flex -space-x-2">
+                <div className="flex -space-x-2" aria-hidden="true">
                   {Array.from({ length: AVATAR_COUNT }, (_, i) => (
                     <div
                       key={i}

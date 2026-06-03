@@ -98,7 +98,7 @@ export default function CTASection() {
             {/* Social proof */}
             <StaggerItem>
               <div className="flex items-center justify-center gap-3">
-                <div className="flex -space-x-2">
+                <div className="flex -space-x-2" aria-hidden="true">
                   {Array.from({ length: AVATAR_COUNT }, (_, i) => (
                     <div
                       key={i}

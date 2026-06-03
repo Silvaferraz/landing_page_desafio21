@@ -17,12 +17,22 @@
 .DS_Store
 *.pem
 
+# backup files
+*.bak
+*.tmp
+*~
+
+# public dir — no internal docs
+public/**/*.bak
+public/**/*.tmp
+
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
 
 # vercel

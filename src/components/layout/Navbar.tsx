@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Container from '@/components/ui/Container'
 import CTAButton from '@/components/ui/CTAButton'
 import { siteConfig } from '@/lib/constants'
@@ -15,6 +15,8 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +48,51 @@ export default function Navbar() {
     }
   }, [menuOpen])
 
+  // Focus trap when mobile menu is open
+  useEffect(() => {
+    if (!menuOpen) return
+
+    const menu = menuRef.current
+    if (!menu) return
+
+    const focusable = menu.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    )
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+
+    first?.focus()
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault()
+          last?.focus()
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault()
+          first?.focus()
+        }
+      }
+    }
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false)
+        hamburgerRef.current?.focus()
+      }
+    }
+
+    menu.addEventListener('keydown', handleTab)
+    document.addEventListener('keydown', handleEsc)
+    return () => {
+      menu.removeEventListener('keydown', handleTab)
+      document.removeEventListener('keydown', handleEsc)
+    }
+  }, [menuOpen])
+
   return (
     <header
       className={`fixed left-0 right-0 top-0 z-40 transition-all duration-300 ${
@@ -67,7 +114,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="font-century text-sm text-white/80 transition-colors hover:text-neon-green"
+              className="font-century text-sm text-white/80 transition-colors hover:text-neon-green focus-visible:outline-2 focus-visible:outline-neon-green"
             >
               {link.label}
             </a>
@@ -80,6 +127,7 @@ export default function Navbar() {
         </nav>
 
         <button
+          ref={hamburgerRef}
           className="touch-target md:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
@@ -106,13 +154,13 @@ export default function Navbar() {
       </Container>
 
       {menuOpen && (
-        <div className="border-t border-white/10 bg-dark-blue/95 backdrop-blur-glass md:hidden">
+        <div ref={menuRef} className="border-t border-white/10 bg-dark-blue/95 backdrop-blur-glass md:hidden">
           <Container className="flex flex-col gap-4 py-6">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="py-2 font-century text-base text-white/80 transition-colors hover:text-neon-green"
+                className="py-2 font-century text-base text-white/80 transition-colors hover:text-neon-green focus-visible:outline-2 focus-visible:outline-neon-green"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}

@@ -16,8 +16,6 @@ const config: Config = {
         century: ['var(--font-century)', 'Trebuchet MS', 'sans-serif'],
       },
       backgroundImage: {
-        'gradient-main':
-          'linear-gradient(135deg, #0B008A 0%, #1a0099 40%, #67AFFF 100%)',
         'gradient-hero':
           'linear-gradient(180deg, rgba(11,0,138,0.92) 0%, rgba(103,175,255,0.75) 100%)',
         'gradient-section':

@@ -1,4 +1,5 @@
 import Container from '@/components/ui/Container'
+import CookiePreferencesButton from '@/components/lgpd/CookiePreferencesButton'
 import { siteConfig } from '@/lib/constants'
 
 export default function Footer() {
@@ -15,19 +16,17 @@ export default function Footer() {
           <nav className="flex flex-wrap items-center gap-6">
             <a
               href="/politica-de-privacidade"
-              className="font-century text-sm text-white/60 transition-colors hover:text-sky-blue"
+              className="font-century text-sm text-white/60 transition-colors hover:text-sky-blue focus-visible:outline-2 focus-visible:outline-neon-green"
             >
-              Política de Privacidade
+              Politica de Privacidade
             </a>
             <a
               href="/termos-de-uso"
-              className="font-century text-sm text-white/60 transition-colors hover:text-sky-blue"
+              className="font-century text-sm text-white/60 transition-colors hover:text-sky-blue focus-visible:outline-2 focus-visible:outline-neon-green"
             >
               Termos de Uso
             </a>
-            <span className="font-century text-sm text-white/30">
-              Preferências de Cookies
-            </span>
+            <CookiePreferencesButton />
           </nav>
         </div>
 
