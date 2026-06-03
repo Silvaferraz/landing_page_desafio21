@@ -1,4 +1,82 @@
+export interface TimelineItem {
+  id: string
+  week: string
+  title: string
+  description: string
+}
+
+export const timelineData: TimelineItem[] = [
+  {
+    id: 'etapa-1',
+    week: 'Semanas 1-2',
+    title: 'Avaliacao e Fundacao',
+    description:
+      'Acompanhamento individualizado com nossa equipe multidisciplinar para entender seu momento, seus objetivos e tracar o plano perfeito para voce.',
+  },
+  {
+    id: 'etapa-2',
+    week: 'Semanas 3-6',
+    title: 'Transformacao Ativa',
+    description:
+      'Inicio do protocolo personalizado com ajustes semanais. Acompanhamento proximo para garantir resultados consistentes e seguros.',
+  },
+  {
+    id: 'etapa-3',
+    week: 'Semanas 7-10',
+    title: 'Consolidacao de Habitos',
+    description:
+      'Fortalecimento das novas rotinas e habitos saudaveis. Suporte continuo para superar desafios e manter o foco nos resultados.',
+  },
+  {
+    id: 'etapa-4',
+    week: 'Semanas 11-12',
+    title: 'Resultado e Mantencao',
+    description:
+      'Avaliacao final dos resultados alcancados e construcao de um plano de mantencao personalizado para garantir que o progresso continue alem do desafio.',
+  },
+]
+
 export const siteConfig = {
   name: '[Nome do Desafio]',
   domain: 'https://example.com.br',
 }
+
+export interface Specialist {
+  id: string
+  name: string
+  specialty: string
+  bio: string
+  image: string
+  instagram: string
+  badges: string[]
+}
+
+export const specialists: Specialist[] = [
+  {
+    id: 'specialist-1',
+    name: 'Dra. Ana Silva',
+    specialty: 'Nutricionista Clínica',
+    bio: 'Especialista em nutrição feminina com mais de 10 anos de experiência. Referência em reeducação alimentar para mulheres que buscam saúde e bem-estar de forma sustentável.',
+    image: '/images/specialist-1.svg',
+    instagram: 'https://instagram.com/',
+    badges: ['CRN 12345', 'Pós-graduada'],
+  },
+  {
+    id: 'specialist-2',
+    name: 'Dra. Beatriz Santos',
+    specialty: 'Endocrinologista',
+    bio: 'Médica endocrinologista dedicada ao equilíbrio hormonal feminino. Abordagem integrativa que une ciência e cuidado individualizado para resultados duradouros.',
+    image: '/images/specialist-2.svg',
+    instagram: 'https://instagram.com/',
+    badges: ['CRM 54321', 'RQE 9876'],
+  },
+  {
+    id: 'specialist-3',
+    name: 'Dra. Carla Oliveira',
+    specialty: 'Psicóloga Comportamental',
+    bio: 'Psicóloga especializada em comportamento alimentar e saúde mental da mulher. Ajuda milhares de mulheres a desenvolverem uma relação saudável com o corpo e a comida.',
+    image: '/images/specialist-3.svg',
+    instagram: 'https://instagram.com/',
+    badges: ['CRP 67890', 'Mestre em Psicologia'],
+  },
+]

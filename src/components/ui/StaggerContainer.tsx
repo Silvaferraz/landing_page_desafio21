@@ -1,42 +1,25 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { staggerContainer } from '@/lib/animations'
 
 interface StaggerContainerProps {
   children: React.ReactNode
   className?: string
-  staggerDelay?: number
-  delayChildren?: number
-  once?: boolean
+  threshold?: number
 }
 
 export default function StaggerContainer({
   children,
   className = '',
-  staggerDelay = 0.1,
-  delayChildren = 0.2,
-  once = true,
+  threshold = 0.1,
 }: StaggerContainerProps) {
-  const prefersReducedMotion = useReducedMotion()
-
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>
-  }
-
   return (
     <motion.div
+      variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, amount: 0.1 }}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: staggerDelay,
-            delayChildren,
-          },
-        },
-      }}
+      viewport={{ once: true, amount: threshold }}
       className={className}
     >
       {children}

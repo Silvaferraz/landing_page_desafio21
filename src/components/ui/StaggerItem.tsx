@@ -1,31 +1,24 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
-import type { AnimationVariant } from '@/lib/animations'
-import { animationVariants } from '@/lib/animations'
+import { motion } from 'framer-motion'
+import { easeOut } from '@/lib/animations'
 
 interface StaggerItemProps {
   children: React.ReactNode
   className?: string
-  variant?: AnimationVariant
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { ease: easeOut, duration: 0.6 } },
 }
 
 export default function StaggerItem({
   children,
   className = '',
-  variant = 'fade-up',
 }: StaggerItemProps) {
-  const prefersReducedMotion = useReducedMotion()
-
-  const variants = prefersReducedMotion
-    ? {
-        hidden: { opacity: 1 },
-        visible: { opacity: 1 },
-      }
-    : animationVariants[variant]
-
   return (
-    <motion.div variants={variants} className={className}>
+    <motion.div variants={itemVariants} className={className}>
       {children}
     </motion.div>
   )
