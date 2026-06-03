@@ -36,6 +36,39 @@ export const timelineData: TimelineItem[] = [
   },
 ]
 
+export interface ForWhoItem {
+  id: string
+  title: string
+  description: string
+}
+
+export const forWhoData: ForWhoItem[] = [
+  {
+    id: 'para-quem-1',
+    title: 'Mulheres que Desejam Emagrecer com Saude',
+    description:
+      'Se voce ja tentou diversas dietas sem resultados duradouros e busca um metodo que respeite seu corpo e sua rotina.',
+  },
+  {
+    id: 'para-quem-2',
+    title: 'Quem Quer Equilibrio Hormonal',
+    description:
+      'Para mulheres que enfrentam desregulacoes hormonais e buscam uma abordagem integrativa com acompanhamento especializado.',
+  },
+  {
+    id: 'para-quem-3',
+    title: 'Mulheres sem Tempo para Si Mesmas',
+    description:
+      'Se a rotina corrida te impede de cuidar da saude e voce precisa de um programa que se adapte ao seu estilo de vida.',
+  },
+  {
+    id: 'para-quem-4',
+    title: 'Quem Busca Resultados Duradouros',
+    description:
+      'Para quem ja esta cansada de solucoes temporarias e quer uma transformacao real que se mantenha a longo prazo.',
+  },
+]
+
 export const siteConfig = {
   name: '[Nome do Desafio]',
   domain: 'https://example.com.br',
