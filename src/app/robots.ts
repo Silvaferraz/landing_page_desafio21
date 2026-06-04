@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/_next/', '/api/'],
     },
-    sitemap: 'https://example.com.br/sitemap.xml',
+    sitemap: 'https://desafio21dias-psi.vercel.app/sitemap.xml',
   }
 }

@@ -8,6 +8,7 @@ import {
 } from '@/context/CookieConsentContext'
 import CookieBanner from '@/components/lgpd/CookieBanner'
 import CookieModal from '@/components/lgpd/CookieModal'
+import StickyCTA from '@/components/ui/StickyCTA'
 import { siteConfig } from '@/lib/constants'
 import './globals.css'
 
@@ -184,6 +185,7 @@ export default function RootLayout({
           <ConsentAnalyticsGate />
           <CookieBanner />
           <CookieModal />
+          <StickyCTA />
         </CookieConsentProvider>
       </body>
     </html>

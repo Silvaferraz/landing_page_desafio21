@@ -1,14 +1,14 @@
 'use client'
 
-import { GoogleTagManager } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
-const GTM_ID = 'GTM-XXXXXXX'
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID ?? 'G-TSG8PZT1FM'
 
-interface GTMScriptProps {
+interface GAScriptProps {
   consent: boolean
 }
 
-export default function GTMScript({ consent }: GTMScriptProps) {
+export default function GAScript({ consent }: GAScriptProps) {
   if (!consent) return null
-  return <GoogleTagManager gtmId={GTM_ID} />
+  return <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
 }

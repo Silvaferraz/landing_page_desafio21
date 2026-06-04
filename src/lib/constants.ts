@@ -83,7 +83,7 @@ export const ctaConfig = {
 
 export const siteConfig = {
   name: 'Desafio 21 dias por você',
-  domain: 'https://example.com.br',
+  domain: 'https://desafio21dias-psi.vercel.app',
   responsible: 'Selena Rossi',
   logo: '/images/logo6.webp',
 }

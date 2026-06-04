@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react'
 import { setConsentChecker, setMarketingConsentChecker, trackPageView } from '@/lib/analytics'
-import GTMScript from '@/components/analytics/GTMScript'
+import GAScript from '@/components/analytics/GTMScript'
 import MetaPixel from '@/components/analytics/MetaPixel'
 import ScrollTracker from '@/components/analytics/ScrollTracker'
 import ClickTracker from '@/components/analytics/ClickTracker'
@@ -168,7 +168,7 @@ export function ConsentAnalyticsGate() {
 
   return (
     <>
-      {(analytics || marketing) && <GTMScript consent={analytics || marketing} />}
+      {(analytics || marketing) && <GAScript consent={analytics || marketing} />}
       {marketing && <MetaPixel consent={marketing} />}
       {consent.status !== 'pending' && (
         <>
