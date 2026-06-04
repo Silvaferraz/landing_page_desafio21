@@ -15,7 +15,7 @@ export default function Footer() {
             <Image src="/images/logo6.webp" alt="Logo do Footer" width={200} height={200} loading="lazy" />
           </span>
 
-          <nav className="flex flex-wrap items-center gap-6">
+          <nav className="flex flex-wrap items-center gap-6 justify-center md:justify-start">
             <a
               href="/politica-de-privacidade"
               className="font-century text-sm text-white/60 transition-colors hover:text-sky-blue focus-visible:outline-2 focus-visible:outline-neon-green"
