@@ -161,14 +161,12 @@ export function ConsentAnalyticsGate() {
   const marketing = consent.status !== 'pending' && consent.marketing
 
   useEffect(() => {
-    if (consent.status !== 'pending' && consent.analytics) {
-      trackPageView()
-    }
-  }, [consent.status, consent.analytics])
+    trackPageView()
+  }, [])
 
   return (
     <>
-      {(analytics || marketing) && <GAScript consent={analytics || marketing} />}
+      <GAScript consent={true} />
       {marketing && <MetaPixel consent={marketing} />}
       {consent.status !== 'pending' && (
         <>

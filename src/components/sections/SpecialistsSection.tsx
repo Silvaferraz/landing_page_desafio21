@@ -87,7 +87,7 @@ function SpecialistCard({
               className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
               aria-label={`Instagram da ${specialist.name}`}
             >
-              <Image className="" width={specialist.width} height={specialist.height} src={specialist.logo} alt="Logomarca" loading="lazy" />
+              <Image className="" width={specialist.width} height={specialist.height} src={specialist.logo} alt={`Logo ${specialist.name}`} loading="lazy" />
             </a>
           </div>
         </div>

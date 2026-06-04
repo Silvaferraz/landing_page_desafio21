@@ -164,7 +164,7 @@ export default function RootLayout({
                   url: siteUrl,
                   description: siteDescription,
                   image: ogImage,
-                  telephone: '+55XXXXXXXXXXX',
+                  telephone: '+5555999501617',
                   address: {
                     '@type': 'PostalAddress',
                     addressLocality: 'Brasil',

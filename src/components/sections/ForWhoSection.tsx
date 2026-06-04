@@ -17,7 +17,7 @@ function ForWhoCard({
 }) {
   return (
       <GlassCard className="flex items-start gap-4 md:gap-5 bg-white">
-      <Image src={item.icon} width={50} height={50} alt="Icone" loading="lazy" />
+      <Image src={item.icon} width={50} height={50} alt={item.title} loading="lazy" />
       <div className="flex flex-col gap-1.5">
         <h3 className="heading-4 text-deep-blue/90">{item.title}</h3>
         <p className="body-text text-deep-blue/90">{item.description}</p>
