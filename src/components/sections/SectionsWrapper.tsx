@@ -11,7 +11,7 @@ export default function SectionsWrapper({
         style={{ backgroundImage: 'url(/images/hero-bg-lines1.webp)' }}
       />
       {/* Gradient overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-sky-blue/40 to-deep-blue/80" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-sky-blue to-deep-blue" />
       {/* Content — GPU composited */}
       <div className="relative z-10 will-change-transform">{children}</div>
     </div>
