@@ -59,7 +59,7 @@ export default function ForWhoSection() {
                   src="/images/selenaRossi.webp"
                   alt="Mulheres que o desafio atende"
                   fill
-                  className="object-contain"
+                  className="object-cover"
                   sizes="(max-width: 508px) 100vw, 50vw"
                   loading="lazy"
                 />

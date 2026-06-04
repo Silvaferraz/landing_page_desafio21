@@ -100,7 +100,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed left-0 right-0 top-0 z-40 bg-dark-blue/80 shadow-glass backdrop-blur-glass transition-all duration-300 ${
+      className={`fixed left-0 right-0 top-0 z-40 bg-dark-blue backdrop-blur-glass transition-all duration-300 ${
         scrolled ? 'border-b border-white/10' : ''
       }`}
     >

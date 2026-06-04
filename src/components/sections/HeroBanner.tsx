@@ -35,9 +35,6 @@ export default function HeroBanner() {
               priority
               fetchPriority="high"
             />
-            <span className="absolute right-2 top-2 rounded-full bg-neon-green px-3 py-1 text-xs font-bold text-white shadow-lg md:right-3 md:top-3 md:px-4 md:py-1.5 md:text-sm lg:right-4 lg:top-4 lg:px-5 lg:py-2 lg:text-base">
-              2° Edição
-            </span>
           </div>
         </AnimatedSection>
 

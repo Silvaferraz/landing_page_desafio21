@@ -5,13 +5,13 @@ import Badge from '@/components/ui/Badge'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { specialists, type Specialist } from '@/lib/constants'
 
-function SocialIcon({ src, alt }: { src: string; alt: string }) {
+function SocialIcon({ src, alt, width, height }: { src: string; alt: string, width: number, height: number }) {
   return (
     <Image
       src={src}
       alt={alt}
-      width={25}
-      height={25}
+      width={width}
+      height={height}
       className="object-contain"
       loading="lazy"
     />
@@ -36,10 +36,11 @@ function SpecialistCard({
       >
         <div className="relative aspect-[4/5] w-full shrink-0 overflow-hidden rounded-xl bg-white/5 md:w-[220px] lg:w-[260px]">
           <Image
+            style={{ objectPosition: `center ${specialist.objectPosition}` }}
             src={specialist.image}
             alt={`Foto da ${specialist.name} — ${specialist.specialty}`}
             fill
-            className="object-contain"
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, 260px"
             loading="lazy"
           />
@@ -48,7 +49,7 @@ function SpecialistCard({
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap gap-2">
             {specialist.badges.map((badge) => (
-              <Badge key={badge} variant="primary">
+              <Badge key={badge} variant="primary" className="px-2 text-[12px]">
                 {badge}
               </Badge>
             ))}
@@ -68,7 +69,7 @@ function SpecialistCard({
               className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
               aria-label={`Instagram da ${specialist.name}`}
             >
-              <SocialIcon src="/images/instagram.webp" alt="Instagram" />
+              <SocialIcon src="/images/instagram.webp" alt="Instagram" width={25} height={25} />
             </a>
             <a
               href={specialist.whatsapp}
@@ -77,7 +78,7 @@ function SpecialistCard({
               className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
               aria-label={`WhatsApp da ${specialist.name}`}
             >
-              <SocialIcon src="/images/whatsapp.webp" alt="WhatsApp" />
+              <SocialIcon src="/images/whatsapp.webp" alt="WhatsApp" width={30} height={30} />
             </a>
             <a
               href={specialist.instagram}

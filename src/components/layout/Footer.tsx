@@ -40,7 +40,7 @@ export default function Footer() {
             className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-neon-green"
             aria-label="Instagram Selena Rossi"
           >
-            <Image src="/images/instagram.webp" alt="" width={28} height={28} className="h-7 w-7" loading="lazy" />
+            <Image src="/images/instagram.webp" alt="" width={28} height={28} className="" loading="lazy" />
           </a>
           <a
             href={selena.whatsapp}
@@ -49,7 +49,7 @@ export default function Footer() {
             className="transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-neon-green"
             aria-label="WhatsApp Selena Rossi"
           >
-            <Image src="/images/whatsapp.webp" alt="" width={28} height={28} className="h-7 w-7" loading="lazy" />
+            <Image src="/images/whatsapp.webp" alt="" width={32} height={32} className="" loading="lazy" />
           </a>
         </div>
 

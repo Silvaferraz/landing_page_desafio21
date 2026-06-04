@@ -99,6 +99,7 @@ export interface Specialist {
   logo: string
   width: number
   height: number
+  objectPosition: string
   badges: string[]
 }
 
@@ -114,6 +115,7 @@ export const specialists: Specialist[] = [
     logo: '/images/logo_selenaRossi.webp',
     width: 90,
     height: 90,
+    objectPosition: '1%',
     badges: ['CREF 038077-G/RS', 'Saúde da Mulher'],
   },
   {
@@ -127,6 +129,7 @@ export const specialists: Specialist[] = [
     logo: '/images/logo_rafaelFalk.webp',
     width: 110,
     height: 110,
+    objectPosition: '70%',
     badges: ['CRN 18284D', 'Nutrição Esportiva'],
   },
 ]
