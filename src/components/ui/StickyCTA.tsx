@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ctaConfig } from '@/lib/constants'
 
 interface StickyCTAProps {
   href?: string
@@ -10,7 +9,7 @@ interface StickyCTAProps {
 }
 
 export default function StickyCTA({
-  href = ctaConfig.whatsappLink,
+  href = '/inscricao',
   label = 'Quero Participar',
   className = '',
 }: StickyCTAProps) {

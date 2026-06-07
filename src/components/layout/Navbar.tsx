@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
 import CTAButton from '@/components/ui/CTAButton'
-import { siteConfig, ctaConfig } from '@/lib/constants'
+import { siteConfig } from '@/lib/constants'
 
 const NAV_LINKS = [
   { label: 'Home', href: '#hero' },
@@ -129,7 +129,7 @@ export default function Navbar() {
             </a>
           ))}
           <div data-cta="navbar-cta" data-cta-label="navbar-cta" data-cta-whatsapp="true">
-            <CTAButton href={ctaConfig.whatsappLink} size="small">
+            <CTAButton href="/inscricao" size="small">
               Quero Participar
             </CTAButton>
           </div>
@@ -176,7 +176,7 @@ export default function Navbar() {
               </a>
             ))}
             <div data-cta="navbar-cta-mobile" data-cta-label="navbar-cta-mobile" data-cta-whatsapp="true" className="mt-2 w-full">
-              <CTAButton href={ctaConfig.whatsappLink} className="w-full">
+              <CTAButton href="/inscricao" className="w-full">
                 Quero Participar
               </CTAButton>
             </div>

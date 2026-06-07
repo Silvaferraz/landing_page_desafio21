@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import CTAButton from '@/components/ui/CTAButton'
 import AnimatedSection from '@/components/ui/AnimatedSection'
-import { ctaConfig } from '@/lib/constants'
 
 export default function HeroBanner() {
   return (
@@ -40,7 +39,7 @@ export default function HeroBanner() {
 
         <AnimatedSection variant="fade-up" delay={0.3} className="flex flex-wrap justify-center gap-4">
           <div data-cta="hero-cta-principal" data-cta-label="hero-cta-principal" data-cta-whatsapp="true">
-            <CTAButton href={ctaConfig.whatsappLink} variant="primary" size="large">
+            <CTAButton href="/inscricao" variant="primary" size="large">
               Quero Participar
             </CTAButton>
           </div>
