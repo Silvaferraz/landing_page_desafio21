@@ -110,7 +110,7 @@ export default function CTASection() {
                 className="inline-block"
               >
                 <CTAButton
-                  href={ctaConfig.whatsappLink}
+                  href="/inscricao"
                   variant="primary"
                   size="large"
                   className="px-12 py-6 text-xl"

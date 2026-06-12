@@ -1,14 +1,11 @@
 import localFont from 'next/font/local'
 import type { Metadata, Viewport } from 'next'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 import {
   CookieConsentProvider,
   ConsentAnalyticsGate,
 } from '@/context/CookieConsentContext'
 import CookieBanner from '@/components/lgpd/CookieBanner'
 import CookieModal from '@/components/lgpd/CookieModal'
-import StickyCTA from '@/components/ui/StickyCTA'
 import { siteConfig } from '@/lib/constants'
 import './globals.css'
 
@@ -178,14 +175,11 @@ export default function RootLayout({
         />
 
         <CookieConsentProvider>
-          <Navbar />
           <main id="main-content">{children}</main>
-          <Footer />
 
           <ConsentAnalyticsGate />
           <CookieBanner />
           <CookieModal />
-          <StickyCTA />
         </CookieConsentProvider>
       </body>
     </html>

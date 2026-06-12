@@ -88,6 +88,37 @@ export const siteConfig = {
   logo: '/images/logo6.webp',
 }
 
+export interface Coupon {
+  code: string
+  discount: number
+  type: 'percentage' | 'fixed'
+  active: boolean
+  maxUses?: number
+  usedCount?: number
+}
+
+export const coupons: Coupon[] = [
+  {
+    code: 'BEMVINDA10',
+    discount: 10,
+    type: 'percentage',
+    active: true,
+  },
+  {
+    code: 'DESAFIO21',
+    discount: 68.90,
+    type: 'fixed',
+    active: true,
+  },
+]
+
+export const paymentConfig = {
+  price: 69.90,
+  productName: 'Desafio 21 Dias por Você',
+  mercadoPagoLink: process.env.NEXT_PUBLIC_MERCADO_PAGO_LINK || '',
+  mercadoPagoPublicKey: process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY || '',
+}
+
 export interface Specialist {
   id: string
   name: string

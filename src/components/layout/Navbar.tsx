@@ -7,10 +7,10 @@ import CTAButton from '@/components/ui/CTAButton'
 import { siteConfig } from '@/lib/constants'
 
 const NAV_LINKS = [
-  { label: 'Home', href: '#hero' },
-  { label: 'Especialistas', href: '#especialistas' },
-  { label: 'Cronograma', href: '#cronograma' },
-  { label: 'Para Quem É', href: '#para-quem-e' },
+  { label: 'Home', href: '/#hero' },
+  { label: 'Especialistas', href: '/#especialistas' },
+  { label: 'Cronograma', href: '/#cronograma' },
+  { label: 'Para Quem É', href: '/#para-quem-e' },
 ]
 
 export default function Navbar() {
@@ -105,7 +105,7 @@ export default function Navbar() {
       }`}
     >
       <Container className="flex items-center justify-between py-4">
-        <a href="#hero" className="flex shrink-0 items-center">
+        <a href="/" className="flex shrink-0 items-center">
           <Image
             src={siteConfig.logo}
             alt={siteConfig.name}
