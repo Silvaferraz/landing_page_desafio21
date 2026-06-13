@@ -107,7 +107,7 @@ export default function ImageCarousel({
   return (
     <section id={id} className="overflow-hidden py-16 md:py-24">
       <Container>
-        <div className="relative mx-auto" ref={containerRef}>
+          <div className="relative mx-auto max-w-xl" ref={containerRef}>
           <button
             type="button"
             onClick={goPrev}
