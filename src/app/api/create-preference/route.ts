@@ -1,6 +1,7 @@
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import { NextResponse } from 'next/server'
 import { paymentConfig, coupons } from '@/lib/constants'
+import { getCouponUsage } from '@/lib/couponStore'
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN || '',
@@ -18,6 +19,12 @@ export async function POST(request: Request) {
         (c) => c.code.toUpperCase() === couponCode.toUpperCase() && c.active
       )
       if (coupon) {
+        if (coupon.maxUses) {
+          const usedCount = await getCouponUsage(coupon.code)
+          if (usedCount >= coupon.maxUses) {
+            return NextResponse.json({ error: 'Cupom esgotado! Todas as vagas foram preenchidas.' })
+          }
+        }
         appliedCoupon = { code: coupon.code, discount: coupon.discount, type: coupon.type }
         price =
           coupon.type === 'percentage'

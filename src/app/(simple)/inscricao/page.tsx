@@ -36,14 +36,16 @@ export default function InscricaoPage() {
               transforme sua saúde com acompanhamento especializado.
             </p>
 
-            <div className="aspect-video w-full overflow-hidden rounded-2xl bg-dark-blue/50 shadow-blue">
-              <iframe
-                src="https://www.youtube.com/embed/XXXXXXX"
-                title="Desafio 21 dias - Explicação"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="h-full w-full"
-              />
+            <div className="mx-auto w-full max-w-sm">
+              <div className="relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-dark-blue/50 shadow-blue">
+                <iframe
+                  src="https://www.youtube.com/embed/6sXd7Y9SKgg?controls=0&modestbranding=1&rel=0"
+                  title="Desafio 21 dias - Explicação"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute left-0 top-0 h-[130%] w-full -translate-y-[11.5%]"
+                />
+              </div>
             </div>
 
             <div className="mt-10 text-center">

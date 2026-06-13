@@ -9,6 +9,7 @@ import AnimatedSection from '@/components/ui/AnimatedSection'
 import StaggerContainer from '@/components/ui/StaggerContainer'
 import StaggerItem from '@/components/ui/StaggerItem'
 import { timelineData, type TimelineItem } from '@/lib/constants'
+import ImageCarousel from '@/components/sections/ImageCarousel'
 
 function TimelineRow({
   item,
@@ -143,6 +144,8 @@ export default function TimelineSection() {
             ))}
           </StaggerContainer>
         </div>
+
+        <ImageCarousel />
       </Container>
     </section>
   )

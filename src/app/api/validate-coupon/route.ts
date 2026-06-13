@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { coupons, paymentConfig } from '@/lib/constants'
+import { getCouponUsage } from '@/lib/couponStore'
 
 export async function POST(request: Request) {
   try {
@@ -15,6 +16,13 @@ export async function POST(request: Request) {
 
     if (!coupon) {
       return NextResponse.json({ valid: false, error: 'Cupom inválido ou expirado' })
+    }
+
+    if (coupon.maxUses) {
+      const usedCount = await getCouponUsage(coupon.code)
+      if (usedCount >= coupon.maxUses) {
+        return NextResponse.json({ valid: false, error: 'Cupom esgotado! Todas as vagas foram preenchidas.' })
+      }
     }
 
     let discountedPrice = paymentConfig.price

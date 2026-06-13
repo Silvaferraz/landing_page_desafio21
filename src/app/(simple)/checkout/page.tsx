@@ -61,7 +61,18 @@ function CheckoutContent() {
       })
       const data = await res.json()
 
+      if (data.error) {
+        alert(data.error)
+        setCouponStatus(null)
+        setCouponCode('')
+        setLoading(false)
+        return
+      }
+
       if (data.initPoint) {
+        if (couponStatus?.valid && couponCode.trim()) {
+          localStorage.setItem('usedCoupon', couponCode.trim())
+        }
         window.location.href = data.initPoint
       } else {
         alert('Erro ao gerar pagamento. Tente novamente.')

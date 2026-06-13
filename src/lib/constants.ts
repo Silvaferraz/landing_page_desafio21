@@ -99,16 +99,18 @@ export interface Coupon {
 
 export const coupons: Coupon[] = [
   {
-    code: 'BEMVINDA10',
+    code: 'DESAFIO10',
     discount: 10,
     type: 'percentage',
     active: true,
+
   },
   {
     code: 'DESAFIO21',
-    discount: 68.90,
-    type: 'fixed',
+    discount: 21,
+    type: 'percentage',
     active: true,
+    maxUses: 10,
   },
 ]
 

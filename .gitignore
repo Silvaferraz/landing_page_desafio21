@@ -43,3 +43,6 @@ yarn-error.log*
 next-env.d.ts
 
 fazer-agora.md
+
+# runtime data
+coupon-usage.json
