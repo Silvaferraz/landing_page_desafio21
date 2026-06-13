@@ -111,7 +111,7 @@ export default function ImageCarousel({
           <button
             type="button"
             onClick={goPrev}
-            className="absolute left-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20 max-md:h-8 max-md:w-8"
+            className="absolute left-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-sky-blue/80 text-white backdrop-blur-sm transition-all hover:bg-sky-blue max-md:h-8 max-md:w-8"
             aria-label="Anterior"
           >
             <svg className="h-5 w-5 max-md:h-4 max-md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -122,7 +122,7 @@ export default function ImageCarousel({
           <button
             type="button"
             onClick={goNext}
-            className="absolute right-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20 max-md:h-8 max-md:w-8"
+            className="absolute right-0 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-sky-blue/80 text-white backdrop-blur-sm transition-all hover:bg-sky-blue max-md:h-8 max-md:w-8"
             aria-label="Próximo"
           >
             <svg className="h-5 w-5 max-md:h-4 max-md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
