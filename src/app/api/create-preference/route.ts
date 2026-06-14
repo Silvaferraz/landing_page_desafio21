@@ -47,6 +47,11 @@ export async function POST(request: Request) {
             unit_price: price,
           },
         ],
+        payment_methods: {
+          excluded_payment_types: [
+            { id: 'ticket' },
+          ],
+        },
         back_urls: {
           success: `${siteUrl}/obrigado`,
           failure: `${siteUrl}/checkout?status=failure`,
