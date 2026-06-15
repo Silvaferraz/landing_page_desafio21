@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import CTAButton from '@/components/ui/CTAButton'
 import BackButton from '@/components/ui/BackButton'
+import DepoimentoCarrossel from '@/components/ui/DepoimentoCarrossel'
 
 export const metadata: Metadata = {
   title: 'Inscricao | Desafio 21 dias por voce',
@@ -60,6 +61,10 @@ export default function InscricaoPage() {
               >
                 Me Inscrever
               </CTAButton>
+            </div>
+
+            <div className="mt-8">
+              <DepoimentoCarrossel />
             </div>
           </div>
         </div>

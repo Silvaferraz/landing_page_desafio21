@@ -109,13 +109,13 @@ function CheckoutContent() {
         </p>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-5">
-        <div className="glass rounded-2xl p-6 md:col-span-2">
+      <div className="grid gap-6 md:gap-8 md:grid-cols-5">
+        <div className="glass rounded-2xl p-4 sm:p-6 md:col-span-2">
           <h2 className="heading-3 mb-6">Resumo do Pedido</h2>
 
           <div className="space-y-4">
-            <div className="flex items-start gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/10">
+            <div className="flex items-start gap-3 sm:gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/10 sm:h-16 sm:w-16">
                 <Image
                   src="/images/logo6.webp"
                   alt="Desafio 21 dias"
@@ -160,12 +160,12 @@ function CheckoutContent() {
               alt="Mercado Pago"
               width={200}
               height={100}
-              className="w-auto object-cover"
+              className="max-w-full h-auto w-auto object-contain"
             />
           </div>
         </div>
 
-        <div className="glass rounded-2xl p-6 md:col-span-3">
+        <div className="glass rounded-2xl p-4 sm:p-6 md:col-span-3">
           <h2 className="heading-3 mb-6">Pagamento via PIX</h2>
 
           <div className="mb-6 flex items-center gap-3 rounded-xl bg-white/5 p-4">
@@ -205,19 +205,19 @@ function CheckoutContent() {
             <label htmlFor="coupon" className="mb-2 block text-sm font-bold text-white/70">
               Cupom de desconto
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <input
                 id="coupon"
                 type="text"
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                 placeholder="Digite seu cupom"
-                className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-neon-green"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-neon-green sm:flex-1"
               />
               <button
                 onClick={handleValidateCoupon}
                 disabled={checkingCoupon || !couponCode.trim()}
-                className="touch-target rounded-xl bg-white/10 px-5 font-century font-bold text-white transition-all duration-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
+                className="touch-target w-full rounded-xl bg-white/10 px-5 font-century font-bold text-white transition-all duration-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
               >
                 {checkingCoupon ? '...' : 'Aplicar'}
               </button>
@@ -244,20 +244,20 @@ function CheckoutContent() {
         </div>
       </div>
 
-      <div className="mt-8 flex flex-wrap justify-center gap-4 text-center">
-        <div className="glass-light rounded-xl px-5 py-3">
+      <div className="mt-8 grid grid-cols-1 gap-4 text-center sm:flex sm:flex-wrap sm:justify-center">
+        <div className="glass-light rounded-xl px-5 py-3 sm:w-auto">
           <p className="font-century text-sm font-bold text-white">
             Pagamento Seguro
           </p>
           <p className="text-xs text-white/50">Mercado Pago</p>
         </div>
-        <div className="glass-light rounded-xl px-5 py-3">
+        <div className="glass-light rounded-xl px-5 py-3 sm:w-auto">
           <p className="font-century text-sm font-bold text-white">
             Garantia de 7 Dias
           </p>
           <p className="text-xs text-white/50">Devolução total</p>
         </div>
-        <div className="glass-light rounded-xl px-5 py-3">
+        <div className="glass-light rounded-xl px-5 py-3 sm:w-auto">
           <p className="font-century text-sm font-bold text-white">
             Suporte Direto
           </p>
