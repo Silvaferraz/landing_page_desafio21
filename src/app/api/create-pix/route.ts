@@ -30,6 +30,7 @@ export async function POST(request: Request) {
           coupon.type === 'percentage'
             ? price - (price * coupon.discount) / 100
             : Math.max(0, price - coupon.discount)
+        price = Math.round(price * 100) / 100
       }
     }
 
