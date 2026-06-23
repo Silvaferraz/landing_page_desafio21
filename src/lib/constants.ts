@@ -103,7 +103,6 @@ export const coupons: Coupon[] = [
     discount: 10,
     type: 'percentage',
     active: true,
-
   },
   {
     code: 'DESAFIO21',
@@ -111,6 +110,13 @@ export const coupons: Coupon[] = [
     type: 'percentage',
     active: true,
     maxUses: 10,
+  },
+  {
+    code: 'TESTE01',
+    discount: 69.89,
+    type: 'fixed',
+    active: true,
+    maxUses: 3,
   },
 ]
 
