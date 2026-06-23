@@ -136,6 +136,29 @@ function CheckoutContent() {
     }
   }
 
+  function getCardErrorReason(detail: string): string {
+    const map: Record<string, string> = {
+      'rejected': 'Pagamento recusado. Verifique os dados do cartão.',
+      'rejected_high_risk': 'Pagamento recusado por risco. Tente outro cartão.',
+      'rejected_insufficient_amount': 'Saldo insuficiente no cartão.',
+      'rejected_invalid_installments': 'Parcelamento inválido para este cartão.',
+      'rejected_card_disabled': 'Cartão bloqueado. Entre em contato com seu banco.',
+      'cc_rejected_bad_filled_card_number': 'Número do cartão inválido.',
+      'cc_rejected_bad_filled_date': 'Data de validade inválida.',
+      'cc_rejected_bad_filled_other': 'Dados do cartão inválidos.',
+      'cc_rejected_bad_filled_security_code': 'Código de segurança inválido.',
+      'cc_rejected_blacklist': 'Cartão recusado. Tente outro forma de pagamento.',
+      'cc_rejected_call_for_authorize': 'Cartão precisa de autorização. Ligue para seu banco.',
+      'cc_rejected_card_disabled': 'Cartão bloqueado. Ative-o no app do banco.',
+      'cc_rejected_duplicated_payment': 'Pagamento duplicado. Já processado anteriormente.',
+      'cc_rejected_insufficient_amount': 'Limite do cartão insuficiente.',
+      'cc_rejected_invalid_installments': 'Parcelamento não disponível.',
+      'cc_rejected_max_attempts': 'Muitas tentativas. Tente novamente mais tarde.',
+      'cc_rejected_other_reason': 'Cartão recusado. Tente outro cartão ou forma de pagamento.',
+    }
+    return map[detail] || 'Pagamento não aprovado. Tente novamente.'
+  }
+
   async function handleCardSubmit(formData: any) {
     const res = await fetch('/api/process-card-payment', {
       method: 'POST',
@@ -155,9 +178,9 @@ function CheckoutContent() {
         localStorage.setItem('usedCoupon', couponCode.trim())
       }
       window.location.href = '/obrigado'
-    } else {
-      throw new Error(data.error || 'Pagamento não aprovado')
     }
+    const reason = getCardErrorReason(data.statusDetail)
+    throw new Error(reason)
   }
 
   const displayPrice = couponStatus?.valid && couponStatus.discountedPrice !== undefined
