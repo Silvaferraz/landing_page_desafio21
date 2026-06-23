@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
 import { NextRequest, NextResponse } from 'next/server'
+import { incrementCouponUsage } from '@/lib/couponStore'
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN || '',
@@ -60,6 +61,12 @@ export async function POST(request: NextRequest) {
         coupon: metadata.coupon,
         payerEmail: payment.payer?.email,
       })
+
+      if (status === 'approved' && metadata.coupon) {
+        await incrementCouponUsage(metadata.coupon).catch((e) =>
+          console.error('Error incrementing coupon usage:', e)
+        )
+      }
     }
 
     return NextResponse.json({ received: true })

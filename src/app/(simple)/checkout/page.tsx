@@ -1,15 +1,26 @@
 'use client'
 
-import { Suspense, useState } from 'react'
+import { Suspense, useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import BackButton from '@/components/ui/BackButton'
 import { ctaConfig, paymentConfig } from '@/lib/constants'
+import { initMercadoPago, CardPayment } from '@mercadopago/sdk-react'
+
+type PixData = {
+  paymentId: number
+  qrCodeBase64: string
+  qrCodeText: string
+}
+
+type Tab = 'pix' | 'card'
 
 function CheckoutContent() {
   const searchParams = useSearchParams()
-  const status = searchParams.get('status')
+  const router = useRouter()
+  const statusParam = searchParams.get('status')
 
+  const [tab, setTab] = useState<Tab>('pix')
   const [couponCode, setCouponCode] = useState('')
   const [couponStatus, setCouponStatus] = useState<{
     valid: boolean
@@ -19,11 +30,44 @@ function CheckoutContent() {
   const [checkingCoupon, setCheckingCoupon] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const [pixData, setPixData] = useState<PixData | null>(null)
+  const [pixCopied, setPixCopied] = useState(false)
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const stopPolling = useCallback(() => {
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current)
+      pollingRef.current = null
+    }
+  }, [])
+
+  useEffect(() => {
+    initMercadoPago(paymentConfig.mercadoPagoPublicKey)
+    return () => stopPolling()
+  }, [stopPolling])
+
+  useEffect(() => {
+    if (pixData) {
+      pollingRef.current = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/check-payment?id=${pixData.paymentId}`)
+          const data = await res.json()
+          if (data.status === 'approved') {
+            stopPolling()
+            router.push('/obrigado')
+          }
+        } catch {
+          // retry
+        }
+      }, 3000)
+    }
+    return () => stopPolling()
+  }, [pixData, router, stopPolling])
+
   async function handleValidateCoupon() {
     if (!couponCode.trim()) return
     setCheckingCoupon(true)
     setCouponStatus(null)
-
     try {
       const res = await fetch('/api/validate-coupon', {
         method: 'POST',
@@ -31,7 +75,6 @@ function CheckoutContent() {
         body: JSON.stringify({ code: couponCode.trim() }),
       })
       const data = await res.json()
-
       if (data.valid) {
         setCouponStatus({
           valid: true,
@@ -48,11 +91,10 @@ function CheckoutContent() {
     }
   }
 
-  async function handlePay() {
+  async function handlePixPay() {
     setLoading(true)
-
     try {
-      const res = await fetch('/api/create-preference', {
+      const res = await fetch('/api/create-pix', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -60,27 +102,61 @@ function CheckoutContent() {
         }),
       })
       const data = await res.json()
-
       if (data.error) {
         alert(data.error)
         setCouponStatus(null)
         setCouponCode('')
-        setLoading(false)
         return
       }
-
-      if (data.initPoint) {
+      if (data.id) {
         if (couponStatus?.valid && couponCode.trim()) {
           localStorage.setItem('usedCoupon', couponCode.trim())
         }
-        window.location.href = data.initPoint
-      } else {
-        alert('Erro ao gerar pagamento. Tente novamente.')
+        setPixData({
+          paymentId: data.id,
+          qrCodeBase64: data.qrCodeBase64,
+          qrCodeText: data.qrCodeText,
+        })
       }
     } catch {
-      alert('Erro ao conectar com o Mercado Pago. Tente novamente.')
+      alert('Erro ao gerar PIX. Tente novamente.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function handleCopyPix() {
+    if (!pixData) return
+    try {
+      await navigator.clipboard.writeText(pixData.qrCodeText)
+      setPixCopied(true)
+      setTimeout(() => setPixCopied(false), 3000)
+    } catch {
+      // fallback
+    }
+  }
+
+  async function handleCardSubmit(formData: any) {
+    const res = await fetch('/api/process-card-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: formData.token,
+        issuerId: formData.issuer_id,
+        paymentMethodId: formData.payment_method_id,
+        installments: formData.installments,
+        payer: formData.payer,
+        couponCode: couponStatus?.valid ? couponCode.trim() : undefined,
+      }),
+    })
+    const data = await res.json()
+    if (data.status === 'approved') {
+      if (couponStatus?.valid && couponCode.trim()) {
+        localStorage.setItem('usedCoupon', couponCode.trim())
+      }
+      window.location.href = '/obrigado'
+    } else {
+      throw new Error(data.error || 'Pagamento não aprovado')
     }
   }
 
@@ -88,16 +164,63 @@ function CheckoutContent() {
     ? couponStatus.discountedPrice
     : paymentConfig.price
 
+  if (pixData) {
+    return (
+      <>
+        <div className="mb-8 text-center">
+          <h1 className="heading-1 mb-4">Pagamento via PIX</h1>
+          <p className="body-text mx-auto max-w-xl">
+            Escaneie o QR code abaixo ou copie o código PIX para pagar.
+          </p>
+        </div>
+
+        <div className="mx-auto max-w-md">
+          <div className="glass rounded-2xl p-6 text-center">
+            <div className="mb-4 text-sm text-white/60">
+              Valor: <span className="font-bold text-neon-green">R$ {displayPrice.toFixed(2)}</span>
+            </div>
+
+            <div className="mx-auto mb-6 flex justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`data:image/png;base64,${pixData.qrCodeBase64}`}
+                alt="QR Code PIX"
+                className="h-56 w-56 rounded-xl"
+              />
+            </div>
+
+            <div className="mb-6">
+              <p className="mb-2 text-sm text-white/60">Ou copie o código PIX:</p>
+              <div className="flex gap-2">
+                <input
+                  readOnly
+                  value={pixData.qrCodeText}
+                  className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-xs text-white/80 outline-none"
+                />
+                <button
+                  onClick={handleCopyPix}
+                  className="touch-target shrink-0 rounded-xl bg-neon-green/20 px-4 font-century font-bold text-neon-green transition-all duration-300 hover:bg-neon-green/30"
+                >
+                  {pixCopied ? 'Copiado!' : 'Copiar'}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-2 rounded-xl bg-yellow-500/10 p-3 text-sm text-yellow-300">
+              <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-yellow-400" />
+              Aguardando pagamento...
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
+
   return (
     <>
-      {status === 'failure' && (
+      {statusParam === 'failure' && (
         <div className="mb-8 rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-center text-red-300">
           O pagamento não foi concluído. Tente novamente.
-        </div>
-      )}
-      {status === 'pending' && (
-        <div className="mb-8 rounded-2xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-center text-yellow-300">
-          Pagamento pendente. Assim que for confirmado, você receberá o acesso.
         </div>
       )}
 
@@ -166,40 +289,28 @@ function CheckoutContent() {
         </div>
 
         <div className="glass rounded-2xl p-4 sm:p-6 md:col-span-3">
-          <h2 className="heading-3 mb-6">Pagamento via PIX</h2>
-
-          <div className="mb-6 flex items-center gap-3 rounded-xl bg-white/5 p-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neon-green/20">
-              <span className="text-lg font-bold text-neon-green">PIX</span>
-            </div>
-            <div>
-              <p className="font-century font-bold text-white">
-                Pagamento Instantâneo
-              </p>
-              <p className="text-sm text-white/60">
-                Aprovação em segundos, 7 dias de garantia
-              </p>
-            </div>
+          <div className="mb-6 flex gap-2">
+            <button
+              onClick={() => setTab('pix')}
+              className={`touch-target flex-1 rounded-xl py-3 text-center font-century font-bold transition-all ${
+                tab === 'pix'
+                  ? 'bg-neon-green/20 text-neon-green'
+                  : 'bg-white/5 text-white/50 hover:bg-white/10'
+              }`}
+            >
+              PIX
+            </button>
+            <button
+              onClick={() => setTab('card')}
+              className={`touch-target flex-1 rounded-xl py-3 text-center font-century font-bold transition-all ${
+                tab === 'card'
+                  ? 'bg-neon-green/20 text-neon-green'
+                  : 'bg-white/5 text-white/50 hover:bg-white/10'
+              }`}
+            >
+              Cartão de Crédito
+            </button>
           </div>
-
-          <ul className="mb-8 space-y-3 text-white/70">
-            <li className="flex items-start gap-2">
-              <span className="mt-1 text-neon-green">✓</span>
-              <span>Pagamento 100% seguro via Mercado Pago</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1 text-neon-green">✓</span>
-              <span>Pagamento via PIX com aprovação instantânea</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1 text-neon-green">✓</span>
-              <span>Acesso imediato após confirmação do pagamento</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1 text-neon-green">✓</span>
-              <span>7 dias de garantia incondicional</span>
-            </li>
-          </ul>
 
           <div className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4">
             <label htmlFor="coupon" className="mb-2 block text-sm font-bold text-white/70">
@@ -229,17 +340,50 @@ function CheckoutContent() {
             )}
           </div>
 
-          <button
-            onClick={handlePay}
-            disabled={loading}
-            className="touch-target block w-full rounded-full bg-gradient-cta px-8 py-5 text-center font-century font-bold text-white transition-all duration-300 hover:scale-[1.02] shadow-neon disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? 'Aguarde...' : `Pagar`}
-          </button>
+          {tab === 'pix' && (
+            <>
+              <div className="mb-6 flex items-center gap-3 rounded-xl bg-white/5 p-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neon-green/20">
+                  <span className="text-lg font-bold text-neon-green">PIX</span>
+                </div>
+                <div>
+                  <p className="font-century font-bold text-white">
+                    Pagamento Instantâneo
+                  </p>
+                  <p className="text-sm text-white/60">
+                    Aprovação em segundos, 7 dias de garantia
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={handlePixPay}
+                disabled={loading}
+                className="touch-target block w-full rounded-full bg-gradient-cta px-8 py-5 text-center font-century font-bold text-white transition-all duration-300 hover:scale-[1.02] shadow-neon disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loading ? 'Gerando QR Code...' : 'Pagar com PIX'}
+              </button>
+            </>
+          )}
+
+          {tab === 'card' && (
+            <div className="card-payment-wrapper">
+              <CardPayment
+                initialization={{ amount: displayPrice }}
+                customization={{
+                  visual: { hideFormTitle: true, hidePaymentButton: false },
+                  paymentMethods: {
+                    maxInstallments: 6,
+                  },
+                }}
+                onSubmit={handleCardSubmit}
+                locale="pt-BR"
+              />
+            </div>
+          )}
 
           <p className="mt-4 text-center text-xs text-white/40">
-            Ao clicar, voce sera redirecionado para o ambiente seguro do
-            Mercado Pago.
+            Pagamento processado com segurança pelo Mercado Pago.
           </p>
         </div>
       </div>
