@@ -32,6 +32,8 @@ function CheckoutContent() {
 
   const [pixData, setPixData] = useState<PixData | null>(null)
   const [pixCopied, setPixCopied] = useState(false)
+  const [cardError, setCardError] = useState('')
+  const [cardProcessing, setCardProcessing] = useState(false)
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const stopPolling = useCallback(() => {
@@ -160,27 +162,35 @@ function CheckoutContent() {
   }
 
   async function handleCardSubmit(formData: any) {
-    const res = await fetch('/api/process-card-payment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        token: formData.token,
-        issuerId: formData.issuer_id,
-        paymentMethodId: formData.payment_method_id,
-        installments: formData.installments,
-        payer: formData.payer,
-        couponCode: couponStatus?.valid ? couponCode.trim() : undefined,
-      }),
-    })
-    const data = await res.json()
-    if (data.status === 'approved') {
-      if (couponStatus?.valid && couponCode.trim()) {
-        localStorage.setItem('usedCoupon', couponCode.trim())
+    setCardError('')
+    setCardProcessing(true)
+    try {
+      const res = await fetch('/api/process-card-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: formData.token,
+          issuerId: formData.issuer_id,
+          paymentMethodId: formData.payment_method_id,
+          installments: formData.installments,
+          payer: formData.payer,
+          couponCode: couponStatus?.valid ? couponCode.trim() : undefined,
+        }),
+      })
+      const data = await res.json()
+      if (data.status === 'approved') {
+        if (couponStatus?.valid && couponCode.trim()) {
+          localStorage.setItem('usedCoupon', couponCode.trim())
+        }
+        window.location.href = '/obrigado'
+        return
       }
-      window.location.href = '/obrigado'
+      setCardError(getCardErrorReason(data.statusDetail || data.status))
+    } catch {
+      setCardError('Erro ao processar pagamento. Tente novamente.')
+    } finally {
+      setCardProcessing(false)
     }
-    const reason = getCardErrorReason(data.statusDetail)
-    throw new Error(reason)
   }
 
   const displayPrice = couponStatus?.valid && couponStatus.discountedPrice !== undefined
@@ -324,14 +334,14 @@ function CheckoutContent() {
               PIX
             </button>
             <button
-              onClick={() => setTab('card')}
+              onClick={() => { setTab('card'); setCardError('') }}
               className={`touch-target flex-1 rounded-xl py-3 text-center font-century font-bold transition-all ${
                 tab === 'card'
                   ? 'bg-neon-green/20 text-neon-green'
                   : 'bg-white/5 text-white/50 hover:bg-white/10'
               }`}
             >
-              Cartão de Crédito
+              Cartão
             </button>
           </div>
 
@@ -390,16 +400,32 @@ function CheckoutContent() {
           )}
 
           {tab === 'card' && (
-            <div className="card-payment-wrapper">
+            <div>
+              <p className="mb-4 text-center text-xs text-white/50">
+                Aceitamos cartões de <strong className="text-white">crédito</strong> e{' '}
+                <strong className="text-white">débito</strong>. O tipo é detectado
+                automaticamente pelo número do cartão.
+              </p>
+              {cardProcessing && (
+                <div className="mb-4 rounded-xl bg-neon-green/10 p-3 text-center text-sm text-neon-green">
+                  Processando pagamento...
+                </div>
+              )}
+              {cardError && (
+                <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-center text-sm text-red-300">
+                  {cardError}
+                </div>
+              )}
               <CardPayment
                 initialization={{ amount: displayPrice }}
                 customization={{
-                  visual: { hideFormTitle: true, hidePaymentButton: false },
+                  visual: { hideFormTitle: true },
                   paymentMethods: {
                     maxInstallments: 6,
                   },
                 }}
                 onSubmit={handleCardSubmit}
+                onError={() => setCardError('Erro ao carregar formulário de pagamento.')}
                 locale="pt-BR"
               />
             </div>
