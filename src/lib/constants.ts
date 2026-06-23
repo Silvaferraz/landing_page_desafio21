@@ -111,13 +111,6 @@ export const coupons: Coupon[] = [
     active: true,
     maxUses: 10,
   },
-  {
-    code: 'TESTE01',
-    discount: 69.89,
-    type: 'fixed',
-    active: true,
-    maxUses: 3,
-  },
 ]
 
 export const paymentConfig = {
