@@ -49,6 +49,17 @@ function CheckoutContent() {
   }, [stopPolling])
 
   useEffect(() => {
+    if (!couponCode.trim()) {
+      setCouponStatus(null)
+      return
+    }
+    const timer = setTimeout(() => {
+      handleValidateCoupon()
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [couponCode])
+
+  useEffect(() => {
     if (pixData) {
       pollingRef.current = setInterval(async () => {
         try {
@@ -349,22 +360,20 @@ function CheckoutContent() {
             <label htmlFor="coupon" className="mb-2 block text-sm font-bold text-white/70">
               Cupom de desconto
             </label>
-            <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="relative">
               <input
                 id="coupon"
                 type="text"
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                 placeholder="Digite seu cupom"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/30 outline-none transition-colors focus:border-neon-green sm:flex-1"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 pr-10 text-white placeholder-white/30 outline-none transition-colors focus:border-neon-green"
               />
-              <button
-                onClick={handleValidateCoupon}
-                disabled={checkingCoupon || !couponCode.trim()}
-                className="touch-target w-full rounded-xl bg-white/10 px-5 font-century font-bold text-white transition-all duration-300 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-              >
-                {checkingCoupon ? '...' : 'Aplicar'}
-              </button>
+              {checkingCoupon && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-neon-green border-t-transparent" />
+                </div>
+              )}
             </div>
             {couponStatus && (
               <p className={`mt-2 text-sm ${couponStatus.valid ? 'text-neon-green' : 'text-red-400'}`}>

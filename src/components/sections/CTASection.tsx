@@ -16,7 +16,7 @@ const AVATAR_IMAGES = [
   '/images/hero-avatar-3.jpg',
 ]
 
-const CHALLENGE_START = new Date('2026-06-24T00:00:00-03:00')
+const CHALLENGE_START = new Date('2026-06-27T23:59:59-03:00')
 
 function getTimeRemaining() {
   const now = new Date()
@@ -60,7 +60,7 @@ export default function CTASection() {
           {/* Headline */}
           <AnimatedSection variant="fade-up" delay={0.2}>
             <h2 className="heading-2 mb-4">
-              Pronta para Transformar sua Saude?
+              Pronta para Transformar sua Saúde?
             </h2>
           </AnimatedSection>
 
@@ -77,7 +77,7 @@ export default function CTASection() {
           <AnimatedSection variant="fade-up" delay={0.35}>
             <div className="glass mx-auto mb-10 mt-8 max-w-md rounded-2xl p-6 md:p-8">
               <span className="label-text mb-4 block text-center text-xs">
-                O DESAFIO COMEÇA EM
+                FIM DAS INCRIÇÕES EM:
               </span>
               <div className="grid grid-cols-4 gap-2">
                 {[
