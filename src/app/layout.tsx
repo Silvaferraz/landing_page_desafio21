@@ -113,6 +113,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        {/* [ANALYTICS DESATIVADO]
         {process.env.NODE_ENV === 'production' && (
           <>
             <link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -121,6 +122,7 @@ export default function RootLayout({
             <link rel="dns-prefetch" href="https://connect.facebook.net" />
           </>
         )}
+        */}
       </head>
       <body
         className={`${aileron.variable} ${centuryGothic.variable} bg-dark-blue text-white antialiased`}

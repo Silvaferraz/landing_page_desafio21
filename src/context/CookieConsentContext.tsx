@@ -8,11 +8,11 @@ import {
   useCallback,
   type ReactNode,
 } from 'react'
-import { setConsentChecker, setMarketingConsentChecker, trackPageView } from '@/lib/analytics'
-import GAScript from '@/components/analytics/GTMScript'
-import MetaPixel from '@/components/analytics/MetaPixel'
-import ScrollTracker from '@/components/analytics/ScrollTracker'
-import ClickTracker from '@/components/analytics/ClickTracker'
+// import { setConsentChecker, setMarketingConsentChecker, trackPageView } from '@/lib/analytics'
+// import GAScript from '@/components/analytics/GTMScript'
+// import MetaPixel from '@/components/analytics/MetaPixel'
+// import ScrollTracker from '@/components/analytics/ScrollTracker'
+// import ClickTracker from '@/components/analytics/ClickTracker'
 
 type ConsentStatus = 'pending' | 'accepted' | 'rejected'
 
@@ -85,11 +85,11 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
     setHydrated(true)
   }, [])
 
-  useEffect(() => {
-    if (!hydrated) return
-    setConsentChecker(() => consent.analytics)
-    setMarketingConsentChecker(() => consent.marketing)
-  }, [consent, hydrated])
+  // useEffect(() => {
+  //   if (!hydrated) return
+  //   setConsentChecker(() => consent.analytics)
+  //   setMarketingConsentChecker(() => consent.marketing)
+  // }, [consent, hydrated])
 
   const acceptAll = useCallback(() => {
     const next: CookieConsent = {
@@ -156,24 +156,26 @@ export function useCookieConsent() {
 
 /** Renderiza analytics components com consentimento do contexto */
 export function ConsentAnalyticsGate() {
-  const { consent } = useCookieConsent()
-  const analytics = consent.status !== 'pending' && consent.analytics
-  const marketing = consent.status !== 'pending' && consent.marketing
+  // const { consent } = useCookieConsent()
+  // const analytics = consent.status !== 'pending' && consent.analytics
+  // const marketing = consent.status !== 'pending' && consent.marketing
 
-  useEffect(() => {
-    trackPageView()
-  }, [])
+  // useEffect(() => {
+  //   trackPageView()
+  // }, [])
 
-  return (
-    <>
-      <GAScript consent={true} />
-      {marketing && <MetaPixel consent={marketing} />}
-      {consent.status !== 'pending' && (
-        <>
-          <ScrollTracker />
-          <ClickTracker />
-        </>
-      )}
-    </>
-  )
+  // return (
+  //   <>
+  //     <GAScript consent={true} />
+  //     {marketing && <MetaPixel consent={marketing} />}
+  //     {consent.status !== 'pending' && (
+  //       <>
+  //         <ScrollTracker />
+  //         <ClickTracker />
+  //       </>
+  //     )}
+  //   </>
+  // )
+
+  return null
 }
