@@ -57,7 +57,7 @@ function SpecialistCard({
 
           <h3 className="heading-3">{specialist.name}</h3>
 
-          <p className="label-text text-deep-blue">{specialist.specialty}</p>
+          <p className="label-text text-[#FEA7EC]">{specialist.specialty}</p>
 
           <p className="body-text text-white/90">{specialist.bio}</p>
 
@@ -66,7 +66,7 @@ function SpecialistCard({
               href={specialist.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
+              className="inline-flex text-sky-blue transition-colors hover:text-brand-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
               aria-label={`Instagram da ${specialist.name}`}
             >
               <SocialIcon src="/images/instagram.webp" alt="Instagram" width={25} height={25} />
@@ -75,7 +75,7 @@ function SpecialistCard({
               href={specialist.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
+              className="inline-flex text-sky-blue transition-colors hover:text-brand-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
               aria-label={`WhatsApp da ${specialist.name}`}
             >
               <SocialIcon src="/images/whatsapp.webp" alt="WhatsApp" width={30} height={30} />
@@ -84,7 +84,7 @@ function SpecialistCard({
               href={specialist.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex text-sky-blue transition-colors hover:text-neon-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
+              className="inline-flex text-sky-blue transition-colors hover:text-brand-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 focus-visible:ring-offset-dark-blue"
               aria-label={`Instagram da ${specialist.name}`}
             >
               <Image className="" width={specialist.width} height={specialist.height} src={specialist.logo} alt={`Logo ${specialist.name}`} loading="lazy" />

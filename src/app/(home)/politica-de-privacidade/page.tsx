@@ -213,7 +213,7 @@ export default function PoliticaPrivacidadePage() {
                   href={ctaConfig.selenaLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sky-blue underline transition-colors hover:text-neon-green"
+                  className="text-sky-blue underline transition-colors hover:text-brand-pink"
                 >
                   Clique aqui para falar conosco
                 </a>

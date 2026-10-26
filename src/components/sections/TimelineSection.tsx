@@ -131,7 +131,7 @@ export default function TimelineSection() {
           <div className="absolute bottom-0 left-[12px] top-0 w-[2px] md:left-1/2 md:-translate-x-px">
             <div className="absolute inset-0 rounded-full bg-white/10" />
             <motion.div
-              className="absolute inset-0 origin-top rounded-full bg-gradient-to-b from-sky-blue to-neon-green"
+              className="absolute inset-0 origin-top rounded-full bg-gradient-to-b from-sky-blue to-brand-pink"
               style={{ scaleY: lineScale }}
             />
           </div>

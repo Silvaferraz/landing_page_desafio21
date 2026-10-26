@@ -92,15 +92,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/icon_rosa.PNG', type: 'image/png' },
     ],
-    apple: [{ url: '/apple-touch-icon.png' }],
+    apple: [{ url: '/images/icon_rosa.PNG', type: 'image/png' }],
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0B008A',
+  themeColor: '#0C0383',
   width: 'device-width',
   initialScale: 1,
 }
@@ -129,7 +128,7 @@ export default function RootLayout({
       >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-neon-green focus:px-4 focus:py-2 focus:text-dark-blue"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-brand-pink focus:px-4 focus:py-2 focus:text-dark-blue"
         >
           Pular para o conteudo
         </a>

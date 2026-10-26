@@ -1,23 +1,18 @@
 'use client'
 
-import { Suspense, useState, useEffect, useRef, useCallback } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Image from 'next/image'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import BackButton from '@/components/ui/BackButton'
 import { ctaConfig, paymentConfig } from '@/lib/constants'
 import { initMercadoPago, CardPayment } from '@mercadopago/sdk-react'
-
-type PixData = {
-  paymentId: number
-  qrCodeBase64: string
-  qrCodeText: string
-}
+import usePaymentConfirmation from '@/hooks/usePaymentConfirmation'
 
 type Tab = 'pix' | 'card'
 
 function CheckoutContent() {
   const searchParams = useSearchParams()
-  const router = useRouter()
+  const { payment, trackPayment, message: paymentMessage } = usePaymentConfirmation()
   const statusParam = searchParams.get('status')
 
   const [tab, setTab] = useState<Tab>('pix')
@@ -30,23 +25,14 @@ function CheckoutContent() {
   const [checkingCoupon, setCheckingCoupon] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const [pixData, setPixData] = useState<PixData | null>(null)
+  const pixData = payment?.method === 'pix' ? payment.pix : null
   const [pixCopied, setPixCopied] = useState(false)
   const [cardError, setCardError] = useState('')
   const [cardProcessing, setCardProcessing] = useState(false)
-  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  const stopPolling = useCallback(() => {
-    if (pollingRef.current) {
-      clearInterval(pollingRef.current)
-      pollingRef.current = null
-    }
-  }, [])
 
   useEffect(() => {
     initMercadoPago(paymentConfig.mercadoPagoPublicKey)
-    return () => stopPolling()
-  }, [stopPolling])
+  }, [])
 
   useEffect(() => {
     if (!couponCode.trim()) {
@@ -58,24 +44,6 @@ function CheckoutContent() {
     }, 500)
     return () => clearTimeout(timer)
   }, [couponCode])
-
-  useEffect(() => {
-    if (pixData) {
-      pollingRef.current = setInterval(async () => {
-        try {
-          const res = await fetch(`/api/check-payment?id=${pixData.paymentId}`)
-          const data = await res.json()
-          if (data.status === 'approved') {
-            stopPolling()
-            router.push('/obrigado')
-          }
-        } catch {
-          // retry
-        }
-      }, 3000)
-    }
-    return () => stopPolling()
-  }, [pixData, router, stopPolling])
 
   async function handleValidateCoupon() {
     if (!couponCode.trim()) return
@@ -121,15 +89,15 @@ function CheckoutContent() {
         setCouponCode('')
         return
       }
-      if (data.id) {
-        if (couponStatus?.valid && couponCode.trim()) {
-          localStorage.setItem('usedCoupon', couponCode.trim())
-        }
-        setPixData({
-          paymentId: data.id,
-          qrCodeBase64: data.qrCodeBase64,
-          qrCodeText: data.qrCodeText,
+      if (res.ok && data.id && data.qrCodeBase64 && data.qrCodeText) {
+        trackPayment({
+          id: data.id,
+          method: 'pix',
+          amount: displayPrice,
+          pix: { qrCodeBase64: data.qrCodeBase64, qrCodeText: data.qrCodeText },
         })
+      } else {
+        throw new Error('Incomplete PIX response')
       }
     } catch {
       alert('Erro ao gerar PIX. Tente novamente.')
@@ -189,11 +157,8 @@ function CheckoutContent() {
         }),
       })
       const data = await res.json()
-      if (data.status === 'approved') {
-        if (couponStatus?.valid && couponCode.trim()) {
-          localStorage.setItem('usedCoupon', couponCode.trim())
-        }
-        window.location.href = '/obrigado'
+      if (res.ok && data.id && ['approved', 'pending', 'in_process', 'authorized', 'in_mediation'].includes(data.status)) {
+        trackPayment({ id: data.id, method: 'card', amount: displayPrice })
         return
       }
       setCardError(getCardErrorReason(data.statusDetail || data.status))
@@ -208,23 +173,23 @@ function CheckoutContent() {
     ? couponStatus.discountedPrice
     : paymentConfig.price
 
-  if (pixData) {
+  if (payment) {
     return (
       <>
         <div className="mb-8 text-center">
-          <h1 className="heading-1 mb-4">Pagamento via PIX</h1>
+          <h1 className="heading-1 mb-4">{pixData ? 'Pagamento via PIX' : 'Confirmando pagamento'}</h1>
           <p className="body-text mx-auto max-w-xl">
-            Escaneie o QR code abaixo ou copie o código PIX para pagar.
+            {pixData ? 'Escaneie o QR code abaixo ou copie o código PIX para pagar.' : 'Seu pagamento está sendo consultado. Assim que for aprovado, você será direcionada para o grupo.'}
           </p>
         </div>
 
         <div className="mx-auto max-w-md">
           <div className="glass rounded-2xl p-6 text-center">
             <div className="mb-4 text-sm text-white/60">
-              Valor: <span className="font-bold text-neon-green">R$ {displayPrice.toFixed(2)}</span>
+              Valor: <span className="font-bold text-brand-pink">R$ {payment.amount.toFixed(2)}</span>
             </div>
 
-            <div className="mx-auto mb-6 flex justify-center">
+            {pixData && <><div className="mx-auto mb-6 flex justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`data:image/png;base64,${pixData.qrCodeBase64}`}
@@ -243,17 +208,25 @@ function CheckoutContent() {
                 />
                 <button
                   onClick={handleCopyPix}
-                  className="touch-target shrink-0 rounded-xl bg-neon-green/20 px-4 font-century font-bold text-neon-green transition-all duration-300 hover:bg-neon-green/30"
+                  className="touch-target shrink-0 rounded-xl bg-brand-pink/20 px-4 font-century font-bold text-brand-pink transition-all duration-300 hover:bg-brand-pink/30"
                 >
                   {pixCopied ? 'Copiado!' : 'Copiar'}
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-2 rounded-xl bg-yellow-500/10 p-3 text-sm text-yellow-300">
+            </>}
+
+            <div role="status" className="flex items-center justify-center gap-2 rounded-xl bg-yellow-500/10 p-3 text-sm text-yellow-300">
               <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-yellow-400" />
               Aguardando pagamento...
             </div>
+            <p className="mt-4 text-sm text-white/80">
+              {paymentMessage || 'Se já pagou, não faça outro pagamento. Ao voltar a esta página neste navegador, retomaremos a confirmação automaticamente.'}
+            </p>
+            <a href={ctaConfig.selenaLink} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-brand-pink underline">
+              Já paguei e preciso de ajuda
+            </a>
           </div>
         </div>
       </>
@@ -262,6 +235,7 @@ function CheckoutContent() {
 
   return (
     <>
+      {paymentMessage && <p role="alert" className="mb-6 rounded-xl bg-yellow-500/10 p-4 text-yellow-300">{paymentMessage}</p>}
       {statusParam === 'failure' && (
         <div className="mb-8 rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-center text-red-300">
           O pagamento não foi concluído. Tente novamente.
@@ -284,7 +258,7 @@ function CheckoutContent() {
             <div className="flex items-start gap-3 sm:gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/10 sm:h-16 sm:w-16">
                 <Image
-                  src="/images/logo6.webp"
+                  src="/images/icon_rosa.PNG"
                   alt="Desafio 21 dias"
                   width={48}
                   height={48}
@@ -307,14 +281,14 @@ function CheckoutContent() {
                 <span>R$ {paymentConfig.price.toFixed(2)}</span>
               </div>
               {couponStatus?.valid && (
-                <div className="mt-1 flex justify-between text-neon-green">
+                <div className="mt-1 flex justify-between text-brand-pink">
                   <span>Desconto</span>
                   <span>- R$ {(paymentConfig.price - (couponStatus.discountedPrice ?? paymentConfig.price)).toFixed(2)}</span>
                 </div>
               )}
               <div className="mt-2 flex justify-between border-t border-white/10 pt-2 font-century font-bold text-white">
                 <span>Total</span>
-                <span className="text-neon-green">
+                <span className="text-brand-pink">
                   R$ {displayPrice.toFixed(2)}
                 </span>
               </div>
@@ -338,7 +312,7 @@ function CheckoutContent() {
               onClick={() => setTab('pix')}
               className={`touch-target flex-1 rounded-xl py-3 text-center font-century font-bold transition-all ${
                 tab === 'pix'
-                  ? 'bg-neon-green/20 text-neon-green'
+                  ? 'bg-brand-pink/20 text-brand-pink'
                   : 'bg-white/5 text-white/50 hover:bg-white/10'
               }`}
             >
@@ -348,7 +322,7 @@ function CheckoutContent() {
               onClick={() => { setTab('card'); setCardError('') }}
               className={`touch-target flex-1 rounded-xl py-3 text-center font-century font-bold transition-all ${
                 tab === 'card'
-                  ? 'bg-neon-green/20 text-neon-green'
+                  ? 'bg-brand-pink/20 text-brand-pink'
                   : 'bg-white/5 text-white/50 hover:bg-white/10'
               }`}
             >
@@ -367,16 +341,16 @@ function CheckoutContent() {
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                 placeholder="Digite seu cupom"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 pr-10 text-white placeholder-white/30 outline-none transition-colors focus:border-neon-green"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 pr-10 text-white placeholder-white/30 outline-none transition-colors focus:border-brand-pink"
               />
               {checkingCoupon && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-neon-green border-t-transparent" />
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-brand-pink border-t-transparent" />
                 </div>
               )}
             </div>
             {couponStatus && (
-              <p className={`mt-2 text-sm ${couponStatus.valid ? 'text-neon-green' : 'text-red-400'}`}>
+              <p className={`mt-2 text-sm ${couponStatus.valid ? 'text-brand-pink' : 'text-red-400'}`}>
                 {couponStatus.message}
               </p>
             )}
@@ -385,8 +359,8 @@ function CheckoutContent() {
           {tab === 'pix' && (
             <>
               <div className="mb-6 flex items-center gap-3 rounded-xl bg-white/5 p-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neon-green/20">
-                  <span className="text-lg font-bold text-neon-green">PIX</span>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-pink/20">
+                  <span className="text-lg font-bold text-brand-pink">PIX</span>
                 </div>
                 <div>
                   <p className="font-century font-bold text-white">
@@ -401,7 +375,7 @@ function CheckoutContent() {
               <button
                 onClick={handlePixPay}
                 disabled={loading}
-                className="touch-target block w-full rounded-full bg-gradient-cta px-8 py-5 text-center font-century font-bold text-white transition-all duration-300 hover:scale-[1.02] shadow-neon disabled:cursor-not-allowed disabled:opacity-60"
+                className="touch-target block w-full rounded-full bg-[#FEA7EC] px-8 py-5 text-center font-century font-bold text-white transition-all duration-300 hover:scale-[1.02] shadow-pink disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? 'Gerando QR Code...' : 'Pagar com PIX'}
               </button>
@@ -416,7 +390,7 @@ function CheckoutContent() {
                 automaticamente pelo número do cartão.
               </p>
               {cardProcessing && (
-                <div className="mb-4 rounded-xl bg-neon-green/10 p-3 text-center text-sm text-neon-green">
+                <div className="mb-4 rounded-xl bg-brand-pink/10 p-3 text-center text-sm text-brand-pink">
                   Processando pagamento...
                 </div>
               )}

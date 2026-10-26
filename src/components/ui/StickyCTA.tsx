@@ -9,7 +9,7 @@ interface StickyCTAProps {
 }
 
 export default function StickyCTA({
-  href = '/inscricao',
+  href = '/checkout',
   label = 'Quero Participar',
   className = '',
 }: StickyCTAProps) {
@@ -40,7 +40,7 @@ export default function StickyCTA({
           href={href}
           target={isExternal ? '_blank' : undefined}
           rel={isExternal ? 'noopener noreferrer' : undefined}
-          className="touch-target block w-full rounded-full bg-gradient-cta px-8 py-4 text-center font-century font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-neon"
+          className="touch-target block w-full rounded-full bg-[#FEA7EC] px-8 py-4 text-center font-century font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-pink"
         >
           {label}
         </a>

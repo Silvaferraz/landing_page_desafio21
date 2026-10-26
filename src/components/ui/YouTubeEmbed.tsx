@@ -21,7 +21,7 @@ export default function YouTubeEmbed({
     >
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-dark-blue/50">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-neon-green border-t-transparent" />
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-pink border-t-transparent" />
         </div>
       )}
       <iframe

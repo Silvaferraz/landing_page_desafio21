@@ -1,77 +1,58 @@
-import crypto from 'crypto'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
 import { NextRequest, NextResponse } from 'next/server'
-import { incrementCouponUsage } from '@/lib/couponStore'
+import { recordPaymentCouponUsage } from '@/lib/couponStore'
+import { verifyMercadoPagoSignature } from '@/lib/mercadoPagoWebhook'
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN || '',
 })
 
-function verifySignature(
-  rawBody: string,
-  xSignature: string,
-  xRequestId: string
-): boolean {
-  const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET
-  if (!secret) return true
-
-  const parts = xSignature.split(',')
-  const tsPart = parts.find((p) => p.trim().startsWith('ts='))
-  const v1Part = parts.find((p) => p.trim().startsWith('v1='))
-  if (!tsPart || !v1Part) return false
-
-  const ts = tsPart.split('=')[1]
-  const receivedHash = v1Part.split('=')[1]
-
-  const dataToSign = `id:${xRequestId};ts:${ts};`
-  const computedHash = crypto
-    .createHmac('sha256', secret)
-    .update(dataToSign)
-    .digest('hex')
-
-  return crypto.timingSafeEqual(
-    Buffer.from(computedHash),
-    Buffer.from(receivedHash)
-  )
-}
-
 export async function POST(request: NextRequest) {
   try {
+    const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET
+    if (!secret) {
+      console.error('Webhook secret is not configured')
+      return NextResponse.json({ error: 'Webhook unavailable' }, { status: 503 })
+    }
     const xSignature = request.headers.get('x-signature') || ''
     const xRequestId = request.headers.get('x-request-id') || ''
-    const rawBody = await request.text()
+    const dataId = request.nextUrl.searchParams.get('data.id') || ''
 
-    if (!verifySignature(rawBody, xSignature, xRequestId)) {
+    if (!verifyMercadoPagoSignature(dataId, xSignature, xRequestId, secret)) {
       console.warn('Invalid webhook signature')
-      return NextResponse.json({ received: true })
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
     }
 
-    const body = JSON.parse(rawBody)
+    let body
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
+    }
 
-    if (body.type === 'payment') {
-      const paymentId = body.data.id
-      const payment = await new Payment(client).get({ id: paymentId })
+    if (body?.type === 'payment') {
+      if (!/^\d+$/.test(dataId) || String(body.data?.id) !== dataId) {
+        return NextResponse.json({ error: 'Invalid payment ID' }, { status: 400 })
+      }
+      const payment = await new Payment(client).get({ id: dataId })
 
       const status = payment.status
       const metadata = payment.metadata || {}
 
       console.log('Payment received:', {
-        id: paymentId,
+        id: payment.id,
         status,
         coupon: metadata.coupon,
-        payerEmail: payment.payer?.email,
       })
 
       if (status === 'approved' && metadata.coupon) {
-        await incrementCouponUsage(metadata.coupon).catch((e) =>
-          console.error('Error incrementing coupon usage:', e)
-        )
+        await recordPaymentCouponUsage(String(metadata.coupon), String(payment.id))
       }
     }
 
     return NextResponse.json({ received: true })
   } catch (error) {
     console.error('Webhook error:', error)
-    return NextResponse.json({ received: true })
+    return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 })
   }
 }

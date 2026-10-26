@@ -16,11 +16,11 @@ const AVATAR_IMAGES = [
   '/images/hero-avatar-3.jpg',
 ]
 
-const CHALLENGE_START = new Date('2026-06-27T23:59:59-03:00')
+const REGISTRATION_DEADLINE = new Date('2026-11-09T00:00:00-03:00')
 
 function getTimeRemaining() {
   const now = new Date()
-  const diff = CHALLENGE_START.getTime() - now.getTime()
+  const diff = REGISTRATION_DEADLINE.getTime() - now.getTime()
   if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
   return {
     days: Math.floor(diff / (1000 * 60 * 60 * 24)),
@@ -110,7 +110,7 @@ export default function CTASection() {
                 className="inline-block"
               >
                 <CTAButton
-                  href="/inscricao"
+                  href="/checkout"
                   variant="primary"
                   size="large"
                   className="px-12 py-6 text-xl"

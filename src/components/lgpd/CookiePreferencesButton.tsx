@@ -8,7 +8,7 @@ export default function CookiePreferencesButton() {
   return (
     <button
       onClick={openModal}
-      className="font-century text-sm text-white/60 transition-colors hover:text-sky-blue focus-visible:outline-2 focus-visible:outline-neon-green"
+      className="font-century text-sm text-white/60 transition-colors hover:text-sky-blue focus-visible:outline-2 focus-visible:outline-brand-pink"
     >
       Preferencias de Cookies
     </button>

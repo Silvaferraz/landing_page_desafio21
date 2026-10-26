@@ -20,7 +20,7 @@ export default function CookieBanner() {
           concorda com nossa{' '}
           <a
              href="/politica-de-privacidade"
-            className="underline hover:text-neon-green focus-visible:outline-2 focus-visible:outline-neon-green"
+            className="underline hover:text-brand-pink focus-visible:outline-2 focus-visible:outline-brand-pink"
           >
             Politica de Privacidade
           </a>
@@ -29,19 +29,19 @@ export default function CookieBanner() {
         <div className="flex shrink-0 flex-wrap gap-3">
           <button
             onClick={acceptAll}
-            className="touch-target rounded-full bg-neon-green px-6 py-2 font-century font-bold text-dark-blue transition-all hover:scale-105 hover:shadow-neon focus-visible:outline-2 focus-visible:outline-neon-green"
+            className="touch-target rounded-full bg-brand-pink px-6 py-2 font-century font-bold text-dark-blue transition-all hover:scale-105 hover:shadow-pink focus-visible:outline-2 focus-visible:outline-brand-pink"
           >
             Aceitar Todos
           </button>
           <button
             onClick={rejectAll}
-            className="touch-target rounded-full border border-white/20 px-6 py-2 font-century text-sm text-white/80 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-neon-green"
+            className="touch-target rounded-full border border-white/20 px-6 py-2 font-century text-sm text-white/80 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-brand-pink"
           >
             Recusar
           </button>
           <button
             onClick={openModal}
-            className="touch-target rounded-full border border-white/20 px-6 py-2 font-century text-sm text-white/80 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-neon-green"
+            className="touch-target rounded-full border border-white/20 px-6 py-2 font-century text-sm text-white/80 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-brand-pink"
           >
             Personalizar
           </button>

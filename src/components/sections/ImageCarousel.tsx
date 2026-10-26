@@ -5,9 +5,11 @@ import Image from 'next/image'
 import Container from '@/components/ui/Container'
 
 const IMAGES = [
-  '/images/desafio1.webp',
-  '/images/desafio2.webp',
-  '/images/desafio3.webp',
+  '/images/1.png',
+  '/images/2.png',
+  '/images/3.png',
+  '/images/4.png',
+  '/images/5.png',
 ]
 
 interface ImageCarouselProps {
@@ -160,13 +162,13 @@ export default function ImageCarousel({
                     >
                       <div
                         className="relative w-full overflow-hidden rounded-2xl shadow-2xl"
-                        style={{ height: `min(${itemWidth * 1.33}px, 80vh)`, maxHeight: '80vh' }}
+                        style={{ height: `min(${itemWidth * 1.25}px, 80vh)`, maxHeight: '80vh' }}
                       >
                         <Image
                           src={src}
-                          alt=""
+                          alt={`Como funciona o programa — ${i % total + 1} de ${total}`}
                           fill
-                          className="object-cover"
+                          className="object-contain"
                           sizes={`${itemWidth}px`}
                           priority={Math.abs(i - slide) < 3}
                         />
@@ -185,7 +187,7 @@ export default function ImageCarousel({
                 onClick={() => goTo(i)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   i === realIndex
-                    ? 'w-6 bg-neon-green'
+                    ? 'w-6 bg-brand-pink'
                     : 'w-2 bg-white/30 hover:bg-white/50'
                 }`}
               />

@@ -17,11 +17,11 @@ const focusVisible =
 
 const variants = {
   primary:
-    `bg-gradient-cta text-white font-century font-bold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-neon ${focusVisible} focus-visible:ring-neon-green focus-visible:ring-offset-dark-blue`,
+    `bg-[#FEA7EC] text-white font-century font-bold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-pink ${focusVisible} focus-visible:ring-brand-pink focus-visible:ring-offset-dark-blue`,
   secondary:
     `bg-white/10 text-white font-century font-bold rounded-full border border-white/20 transition-all duration-300 hover:bg-white/20 hover:scale-105 ${focusVisible} focus-visible:ring-white focus-visible:ring-offset-dark-blue`,
   outline:
-    `bg-transparent text-neon-green font-century font-bold rounded-full border-2 border-neon-green transition-all duration-300 hover:bg-neon-green/10 hover:scale-105 ${focusVisible} focus-visible:ring-neon-green focus-visible:ring-offset-dark-blue`,
+    `bg-transparent text-[#FEA7EC] font-century font-bold rounded-full border-2 border-[#FEA7EC] transition-all duration-300 hover:bg-[#FEA7EC]/10 hover:scale-105 ${focusVisible} focus-visible:ring-brand-pink focus-visible:ring-offset-dark-blue`,
 }
 
 export default function CTAButton({

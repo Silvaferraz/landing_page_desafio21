@@ -77,7 +77,7 @@ export const forWhoData: ForWhoItem[] = [
 export const ctaConfig = {
   totalSpots: 50,
   filledSpots: 42,
-  whatsappLink: 'https://chat.whatsapp.com/LTtLly0QSHzGQl5Gqclsf2?s=cl&p=i&ilr=2',
+  whatsappLink: 'https://chat.whatsapp.com/C9t8yWsJGCY8oGWYXDuAm9?s=cl&p=i&mlu=4&ilr=4',
   selenaLink: 'https://wa.me/5555999501617',
 }
 
@@ -85,7 +85,7 @@ export const siteConfig = {
   name: 'Desafio 21 dias por você',
   domain: 'https://desafio21dias-psi.vercel.app',
   responsible: 'Selena Rossi',
-  logo: '/images/logo6.webp',
+  logo: '/images/icon_rosa.PNG',
 }
 
 export interface Coupon {

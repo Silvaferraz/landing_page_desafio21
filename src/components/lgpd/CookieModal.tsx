@@ -78,7 +78,7 @@ export default function CookieModal() {
           <h2 className="heading-3">Preferencias de Cookies</h2>
           <button
             onClick={closeModal}
-            className="touch-target rounded-full text-white/60 hover:text-white focus-visible:outline-2 focus-visible:outline-neon-green"
+            className="touch-target rounded-full text-white/60 hover:text-white focus-visible:outline-2 focus-visible:outline-brand-pink"
             aria-label="Fechar"
           >
             <svg
@@ -123,8 +123,8 @@ export default function CookieModal() {
               aria-checked={analytics}
               aria-label="Cookies de analytics"
               onClick={() => setAnalytics(!analytics)}
-              className={`relative h-6 w-10 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-neon-green ${
-                analytics ? 'bg-neon-green' : 'bg-white/20'
+              className={`relative h-6 w-10 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-brand-pink ${
+                analytics ? 'bg-brand-pink' : 'bg-white/20'
               }`}
             >
               <span
@@ -147,8 +147,8 @@ export default function CookieModal() {
               aria-checked={marketing}
               aria-label="Cookies de marketing"
               onClick={() => setMarketing(!marketing)}
-              className={`relative h-6 w-10 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-neon-green ${
-                marketing ? 'bg-neon-green' : 'bg-white/20'
+              className={`relative h-6 w-10 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-brand-pink ${
+                marketing ? 'bg-brand-pink' : 'bg-white/20'
               }`}
             >
               <span
@@ -162,7 +162,7 @@ export default function CookieModal() {
 
         <button
           onClick={() => savePreferences(analytics, marketing)}
-          className="touch-target w-full rounded-full bg-neon-green px-8 py-3 font-century font-bold text-dark-blue transition-all hover:scale-[1.02] hover:shadow-neon focus-visible:outline-2 focus-visible:outline-neon-green"
+          className="touch-target w-full rounded-full bg-brand-pink px-8 py-3 font-century font-bold text-dark-blue transition-all hover:scale-[1.02] hover:shadow-pink focus-visible:outline-2 focus-visible:outline-brand-pink"
         >
           Salvar Preferencias
         </button>

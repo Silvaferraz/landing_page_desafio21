@@ -3,19 +3,14 @@
 import { useEffect } from 'react'
 import Image from 'next/image'
 import { ctaConfig } from '@/lib/constants'
+import { PENDING_PAYMENT_KEY } from '@/lib/pendingPayment'
 
 export default function ObrigadoClient() {
   useEffect(() => {
-    const usedCoupon = localStorage.getItem('usedCoupon')
-    if (usedCoupon) {
-      fetch('/api/use-coupon', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: usedCoupon }),
-      }).finally(() => {
-        localStorage.removeItem('usedCoupon')
-      })
-    }
+    try {
+      localStorage.removeItem(PENDING_PAYMENT_KEY)
+      localStorage.removeItem('usedCoupon')
+    } catch { /* Browser storage must not block the group link. */ }
   }, [])
 
   return (
@@ -34,9 +29,9 @@ export default function ObrigadoClient() {
       <div className="relative z-10 flex w-full flex-col items-center px-6 py-20">
         <div className="w-full max-w-lg">
           <div className="glass rounded-3xl p-8 text-center md:p-12">
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-neon-green/20">
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-brand-pink/20">
               <svg
-                className="h-10 w-10 text-neon-green"
+                className="h-10 w-10 text-brand-pink"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -62,7 +57,7 @@ export default function ObrigadoClient() {
               href={ctaConfig.whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="touch-target inline-flex items-center justify-center gap-3 rounded-full bg-gradient-cta px-10 py-5 text-center font-century font-bold text-white transition-all duration-300 hover:scale-105 shadow-neon"
+              className="touch-target inline-flex items-center justify-center gap-3 rounded-full bg-[#FEA7EC] px-10 py-5 text-center font-century font-bold text-white transition-all duration-300 hover:scale-105 shadow-pink"
             >
               <svg
                 className="h-6 w-6"

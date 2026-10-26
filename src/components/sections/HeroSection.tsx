@@ -43,7 +43,7 @@ export default function HeroSection() {
               data-cta-label="hero-cta-principal"
               data-cta-whatsapp="true"
             >
-              <CTAButton href="/inscricao" variant="primary" size="large">
+              <CTAButton href="/checkout" variant="primary" size="large">
                 Quero Participar
               </CTAButton>
             </div>

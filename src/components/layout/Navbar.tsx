@@ -109,10 +109,10 @@ export default function Navbar() {
           <Image
             src={siteConfig.logo}
             alt={siteConfig.name}
-            width={160}
+            width={70}
             height={80}
-            className="h-9 w-auto md:h-10 lg:h-20"
-            sizes="(max-width: 768px) 160px, 320px"
+            className="h-12 w-auto md:h-14 lg:h-20"
+            sizes="(max-width: 768px) 42px, (max-width: 1024px) 49px, 70px"
             priority
             fetchPriority="high"
           />
@@ -123,13 +123,13 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="font-century text-sm text-white/80 transition-colors hover:text-neon-green focus-visible:outline-2 focus-visible:outline-neon-green"
+              className="font-century text-sm text-white/80 transition-colors hover:text-brand-pink focus-visible:outline-2 focus-visible:outline-brand-pink"
             >
               {link.label}
             </a>
           ))}
           <div data-cta="navbar-cta" data-cta-label="navbar-cta" data-cta-whatsapp="true">
-            <CTAButton href="/inscricao" size="small">
+            <CTAButton href="/checkout" size="small">
               Quero Participar
             </CTAButton>
           </div>
@@ -169,14 +169,14 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="py-2 font-century text-base text-white/80 transition-colors hover:text-neon-green focus-visible:outline-2 focus-visible:outline-neon-green"
+                className="py-2 font-century text-base text-white/80 transition-colors hover:text-brand-pink focus-visible:outline-2 focus-visible:outline-brand-pink"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
               </a>
             ))}
             <div data-cta="navbar-cta-mobile" data-cta-label="navbar-cta-mobile" data-cta-whatsapp="true" className="mt-2 w-full">
-              <CTAButton href="/inscricao" className="w-full">
+              <CTAButton href="/checkout" className="w-full">
                 Quero Participar
               </CTAButton>
             </div>
@@ -187,7 +187,7 @@ export default function Navbar() {
       {/* Scroll progress bar */}
       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/10">
         <div
-          className="h-full bg-neon-green transition-all duration-150 ease-out"
+          className="h-full bg-brand-pink transition-all duration-150 ease-out"
           style={{ width: `${progress * 100}%` }}
         />
       </div>

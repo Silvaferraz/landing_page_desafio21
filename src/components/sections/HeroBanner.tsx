@@ -8,7 +8,6 @@ export default function HeroBanner() {
       id="hero"
       className="relative flex min-h-screen items-center justify-center overflow-hidden bg-white"
     >
-      {/* Decorative background — crossing blue lines */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <Image
           src="/images/hero-bg-lines.webp"
@@ -25,12 +24,12 @@ export default function HeroBanner() {
         <AnimatedSection variant="fade-up" delay={0.1} className="flex justify-center">
           <div className="relative inline-block">
             <Image
-              src="/images/logo1.webp"
-              alt="Mulher saudável e confiante"
-              width={800}
-              height={1067}
-              className="h-auto w-[600px] object-contain md:w-[600px] lg:w-[800px]"
-              sizes="(max-width: 768px) 600px, 800px"
+              src="/images/Logo desafio 21 dias_vem verão.png"
+              alt="Desafio 21 dias por você — Vem verão!"
+              width={1582}
+              height={994}
+              className="h-auto w-full max-w-[800px] object-contain md:w-[600px] lg:w-[800px]"
+              sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1024px) 600px, 800px"
               priority
               fetchPriority="high"
             />
@@ -39,7 +38,7 @@ export default function HeroBanner() {
 
         <AnimatedSection variant="fade-up" delay={0.3} className="flex flex-wrap justify-center gap-4">
           <div data-cta="hero-cta-principal" data-cta-label="hero-cta-principal" data-cta-whatsapp="true">
-            <CTAButton href="/inscricao" variant="primary" size="large">
+            <CTAButton href="/checkout" variant="primary" size="large">
               Quero Participar
             </CTAButton>
           </div>

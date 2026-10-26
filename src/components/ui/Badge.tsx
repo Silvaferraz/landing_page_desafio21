@@ -5,9 +5,9 @@ interface BadgeProps {
 }
 
 const variants = {
-  default: 'bg-white/10 text-white border-white/20',
-  primary: 'bg-deep-blue/50 text-sky-blue border-sky-blue/30',
-  accent: 'bg-neon-green/90 text-white border-neon-green/30',
+  default: 'bg-[#FEA7EC] text-white border-[#FEA7EC]',
+  primary: 'bg-[#FEA7EC] text-white border-[#FEA7EC]',
+  accent: 'bg-[#FEA7EC] text-white border-[#FEA7EC]',
 }
 
 export default function Badge({
