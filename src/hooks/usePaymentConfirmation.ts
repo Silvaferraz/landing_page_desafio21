@@ -32,10 +32,12 @@ export default function usePaymentConfirmation() {
     let active = true
     let checking = false
     let finished = false
-    const controller = new AbortController()
+    let controller: AbortController | null = null
     const check = async () => {
       if (!active || checking || finished) return
       checking = true
+      controller = new AbortController()
+      const timeout = window.setTimeout(() => controller?.abort(), 12000)
       try {
         const res = await fetch(`/api/check-payment?id=${payment.id}`, {
           cache: 'no-store', signal: controller.signal,
@@ -58,6 +60,7 @@ export default function usePaymentConfirmation() {
       } catch {
         if (active) setMessage('Ainda não conseguimos confirmar. Vamos consultar novamente automaticamente. Se você já pagou, não faça outro pagamento.')
       } finally {
+        window.clearTimeout(timeout)
         checking = false
       }
     }
@@ -69,7 +72,7 @@ export default function usePaymentConfirmation() {
     document.addEventListener('visibilitychange', onReturn)
     return () => {
       active = false
-      controller.abort()
+      controller?.abort()
       window.clearInterval(interval)
       window.removeEventListener('focus', onReturn)
       window.removeEventListener('pageshow', onReturn)
