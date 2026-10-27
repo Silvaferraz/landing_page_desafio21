@@ -1,13 +1,13 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { PENDING_PAYMENT_KEY, parsePendingPayment, isFinalPaymentFailure, type PendingPayment } from '@/lib/pendingPayment'
 
 export default function usePaymentConfirmation() {
-  const router = useRouter()
   const [payment, setPayment] = useState<PendingPayment | null>(null)
   const [message, setMessage] = useState('')
+  const [approved, setApproved] = useState(false)
+  const [checkVersion, setCheckVersion] = useState(0)
 
   useEffect(() => {
     try {
@@ -17,7 +17,7 @@ export default function usePaymentConfirmation() {
     }
   }, [])
 
-  const trackPayment = useCallback((pending: PendingPayment) => {
+  const trackPayment = useCallback((pending: PendingPayment, alreadyApproved = false) => {
     setPayment(pending)
     setMessage('')
     try {
@@ -25,10 +25,16 @@ export default function usePaymentConfirmation() {
     } catch {
       // Do not block confirmation because browser storage is unavailable.
     }
+    if (alreadyApproved) {
+      setApproved(true)
+      window.location.replace('/obrigado/')
+    }
   }, [])
 
+  const checkNow = useCallback(() => setCheckVersion(version => version + 1), [])
+
   useEffect(() => {
-    if (!payment) return
+    if (!payment || approved) return
     let active = true
     let checking = false
     let finished = false
@@ -48,7 +54,8 @@ export default function usePaymentConfirmation() {
         if (data.status === 'approved') {
           finished = true
           // Keep the reference until the destination loads, allowing recovery if navigation fails.
-          router.replace('/obrigado')
+          setApproved(true)
+          window.location.replace('/obrigado/')
         } else if (isFinalPaymentFailure(data.status)) {
           finished = true
           try { localStorage.removeItem(PENDING_PAYMENT_KEY) } catch { /* Storage is optional. */ }
@@ -78,7 +85,7 @@ export default function usePaymentConfirmation() {
       window.removeEventListener('pageshow', onReturn)
       document.removeEventListener('visibilitychange', onReturn)
     }
-  }, [payment, router])
+  }, [payment, approved, checkVersion])
 
-  return { payment, trackPayment, message }
+  return { payment, trackPayment, message, approved, checkNow }
 }

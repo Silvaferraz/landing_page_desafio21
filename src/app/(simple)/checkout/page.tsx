@@ -12,7 +12,7 @@ type Tab = 'pix' | 'card'
 
 function CheckoutContent() {
   const searchParams = useSearchParams()
-  const { payment, trackPayment, message: paymentMessage } = usePaymentConfirmation()
+  const { payment, trackPayment, message: paymentMessage, approved, checkNow } = usePaymentConfirmation()
   const statusParam = searchParams.get('status')
 
   const [tab, setTab] = useState<Tab>('pix')
@@ -158,7 +158,7 @@ function CheckoutContent() {
       })
       const data = await res.json()
       if (res.ok && data.id && ['approved', 'pending', 'in_process', 'authorized', 'in_mediation'].includes(data.status)) {
-        trackPayment({ id: data.id, method: 'card', amount: displayPrice })
+        trackPayment({ id: data.id, method: 'card', amount: displayPrice }, data.status === 'approved')
         return
       }
       setCardError(getCardErrorReason(data.statusDetail || data.status))
@@ -219,11 +219,21 @@ function CheckoutContent() {
 
             <div role="status" className="flex items-center justify-center gap-2 rounded-xl bg-yellow-500/10 p-3 text-sm text-yellow-300">
               <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-yellow-400" />
-              Aguardando pagamento...
+              {approved ? 'Pagamento confirmado!' : 'Aguardando confirmação do pagamento...'}
             </div>
             <p className="mt-4 text-sm text-white/80">
-              {paymentMessage || 'Se já pagou, não faça outro pagamento. Ao voltar a esta página neste navegador, retomaremos a confirmação automaticamente.'}
+              {approved ? 'Seu pagamento foi confirmado. Continue para acessar o grupo.' : paymentMessage || 'Se já pagou, não faça outro pagamento. Ao voltar a esta página neste navegador, retomaremos a confirmação automaticamente.'}
             </p>
+            {approved ? (
+              <a href="/obrigado/" className="touch-target mt-4 rounded-full bg-[#FEA7EC] px-6 py-3 font-century font-bold text-white">
+                Continuar para o grupo
+              </a>
+            ) : (
+              <button type="button" onClick={checkNow} className="touch-target mx-auto mt-4 rounded-full bg-[#FEA7EC] px-6 py-3 font-century font-bold text-white">
+                Já paguei — verificar agora
+              </button>
+            )}
+            <p className="mt-4 text-xs text-white/60">Número do pagamento: {payment.id}</p>
             <a href={ctaConfig.selenaLink} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-brand-pink underline">
               Já paguei e preciso de ajuda
             </a>

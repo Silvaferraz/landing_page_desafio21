@@ -110,7 +110,7 @@ function trackingHarness(saved, options = {}) {
     useState(initial) {
       const slot = cursor++
       if (!(slot in slots)) slots[slot] = initial
-      return [slots[slot], value => { if (!Object.is(slots[slot], value)) { slots[slot] = value; dirty = true } }]
+      return [slots[slot], value => { const next = typeof value === 'function' ? value(slots[slot]) : value; if (!Object.is(slots[slot], next)) { slots[slot] = next; dirty = true } }]
     },
     useCallback: fn => fn,
     useEffect(fn, nextDeps) {
@@ -135,6 +135,7 @@ function trackingHarness(saved, options = {}) {
     },
     window: {
       ...target,
+      location: { replace: path => navigation.push(path) },
       setInterval: fn => { intervals.set(++timerId, fn); return timerId },
       clearInterval: id => intervals.delete(id), setTimeout: () => ++timerId, clearTimeout() {},
     },
@@ -173,7 +174,7 @@ for (const method of ['pix', 'card']) {
     h.responses.push({ status: 'approved' })
     h.events.get('focus')()
     await h.flush()
-    assert.deepEqual(h.navigation, ['/obrigado'])
+    assert.deepEqual(h.navigation, ['/obrigado/'])
     h.tick(); await h.flush()
     assert.equal(h.navigation.length, 1)
     assert.ok(h.storage.has(pending.PENDING_PAYMENT_KEY), 'keep recovery reference until thank-you page loads')
@@ -188,7 +189,7 @@ test('network failure retries without losing payment or prompting another charge
   assert.match(h.result.message, /não faça outro pagamento/)
   assert.equal(h.navigation.length, 0)
   h.responses.push({ status: 'approved' }); h.tick(); await h.flush()
-  assert.deepEqual(h.navigation, ['/obrigado'])
+  assert.deepEqual(h.navigation, ['/obrigado/'])
   h.unmount()
 })
 
@@ -204,6 +205,32 @@ test('declined payment never opens group; disabled storage does not block approv
   other.responses.push({ status: 'approved' })
   other.result.trackPayment({ id: 456, method: 'card', amount: 69.9 })
   await other.flush()
-  assert.deepEqual(other.navigation, ['/obrigado'])
+  assert.deepEqual(other.navigation, ['/obrigado/'])
   other.unmount()
+})
+
+test('card already approved redirects immediately even when the follow-up API is unavailable', async () => {
+  const h = trackingHarness(null)
+  await h.flush()
+  h.responses.push(new Error('Status API unavailable'))
+  h.result.trackPayment({ id: 789, method: 'card', amount: 69.9 }, true)
+  assert.deepEqual(h.navigation, ['/obrigado/'])
+  await h.flush()
+  assert.equal(h.result.approved, true)
+  assert.equal(h.requests.length, 0, 'confirmed card must not depend on a second API request')
+  assert.ok(h.storage.has(pending.PENDING_PAYMENT_KEY))
+  h.unmount()
+})
+
+test('manual verification retries immediately and navigates only after confirmation', async () => {
+  const h = trackingHarness({ id: 123, method: 'card', amount: 69.9 })
+  await h.flush()
+  assert.equal(h.requests.length, 1)
+  assert.equal(h.navigation.length, 0)
+  h.responses.push({ status: 'approved' })
+  h.result.checkNow()
+  await h.flush()
+  assert.equal(h.requests.length, 2)
+  assert.deepEqual(h.navigation, ['/obrigado/'])
+  h.unmount()
 })
