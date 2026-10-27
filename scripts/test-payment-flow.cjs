@@ -12,7 +12,7 @@ function load(file, overrides = {}, extra = {}) {
   }).outputText
   vm.runInNewContext(code, {
     module, exports: module.exports, require: name => name in overrides ? overrides[name] : require(name),
-    Buffer, console: { log() {}, warn() {}, error() {} }, AbortController, ...extra,
+    Buffer, URL, console: { log() {}, warn() {}, error() {} }, AbortController, ...extra,
   }, { filename: file })
   return module.exports
 }
@@ -94,7 +94,8 @@ test('stored payment recovers PIX/card safely and rejects corrupted data', () =>
     const payment = { id: 123, method, amount: 69.9, ...(method === 'pix' ? { pix: { qrCodeBase64: 'png', qrCodeText: 'pix' } } : {}) }
     assert.equal(pending.parsePendingPayment(JSON.stringify(payment)).id, 123)
   }
-  for (const value of [null, '{broken', '{}', '{"id":-1}', '{"id":1,"method":"pix","amount":69.9}']) {
+  assert.equal(pending.parsePendingPayment('{"id":1,"method":"pix","amount":69.9}').id, 1)
+  for (const value of [null, '{broken', '{}', '{"id":-1}', '{"id":1,"method":"pix","amount":69.9,"pix":{}}']) {
     assert.equal(pending.parsePendingPayment(value), null)
   }
 })
@@ -105,6 +106,7 @@ function trackingHarness(saved, options = {}) {
   const intervals = new Map(), events = new Map(), storage = new Map()
   if (saved) storage.set(pending.PENDING_PAYMENT_KEY, JSON.stringify(saved))
   const navigation = [], responses = [], requests = []
+  const location = { href: options.href || 'https://example.test/checkout/', replace: path => navigation.push(path) }
   const router = { replace: path => navigation.push(path) }
   const react = {
     useState(initial) {
@@ -129,13 +131,14 @@ function trackingHarness(saved, options = {}) {
     react, 'next/navigation': { useRouter: () => router }, '@/lib/pendingPayment': pending,
   }, {
     localStorage: {
-      getItem: key => storage.get(key) || null,
+      getItem: key => { if (options.readStorageFails) throw Error('Storage disabled'); return storage.get(key) || null },
       setItem: (key, value) => { if (options.storageFails) throw Error('Storage disabled'); storage.set(key, value) },
       removeItem: key => storage.delete(key),
     },
     window: {
       ...target,
-      location: { replace: path => navigation.push(path) },
+      location,
+      history: { state: null, replaceState: (_state, _unused, url) => { location.href = url } },
       setInterval: fn => { intervals.set(++timerId, fn); return timerId },
       clearInterval: id => intervals.delete(id), setTimeout: () => ++timerId, clearTimeout() {},
     },
@@ -144,6 +147,7 @@ function trackingHarness(saved, options = {}) {
       requests.push({ url, init })
       const next = responses.shift() || { status: 'pending' }
       if (next instanceof Error) throw next
+      if (next && typeof next.then === 'function') return next
       return { ok: !next.error, json: async () => next }
     },
   }).default
@@ -157,7 +161,7 @@ function trackingHarness(saved, options = {}) {
       await new Promise(resolve => setImmediate(resolve))
     }
   }
-  return { flush, get result() { return result }, navigation, responses, requests, storage, events,
+  return { flush, get result() { return result }, navigation, responses, requests, storage, events, location,
     tick: () => { for (const fn of intervals.values()) fn() },
     unmount: () => { for (const fn of cleanups) fn?.() },
   }
@@ -233,4 +237,56 @@ test('manual verification retries immediately and navigates only after confirmat
   assert.equal(h.requests.length, 2)
   assert.deepEqual(h.navigation, ['/obrigado/'])
   h.unmount()
+})
+
+test('payment URL recovers approval when browser storage is unavailable', async () => {
+  const h = trackingHarness(null, { readStorageFails: true, href: 'https://example.test/checkout/?payment_id=123' })
+  h.responses.push({ status: 'approved', amount: 55.22 })
+  await h.flush()
+  assert.equal(h.result.payment.id, 123)
+  assert.equal(h.result.payment.amount, 55.22)
+  assert.deepEqual(h.navigation, ['/obrigado/'])
+  h.unmount()
+  assert.equal(pending.paymentFromRecoveryUrl('https://example.test/?payment_id=invalid'), null)
+  assert.equal(pending.paymentFromRecoveryUrl('https://example.test/?payment_id=0'), null)
+})
+
+test('payment URL is saved even when browser storage refuses writes', async () => {
+  const h = trackingHarness(null, { storageFails: true })
+  await h.flush()
+  h.result.trackPayment({ id: 456, method: 'card', amount: 69.9 })
+  assert.equal(new URL(h.location.href).searchParams.get('payment_id'), '456')
+  await h.flush()
+  assert.equal(h.result.payment.id, 456)
+  h.unmount()
+})
+
+test('returning from bank app restarts a suspended request instead of waiting forever', async () => {
+  const h = trackingHarness({ id: 123, method: 'card', amount: 69.9 })
+  h.responses.push(new Promise(() => {}))
+  await h.flush()
+  assert.equal(h.requests.length, 1)
+  h.responses.push({ status: 'approved' })
+  h.events.get('visibilitychange')()
+  await h.flush()
+  assert.equal(h.requests.length, 2)
+  assert.equal(h.requests[0].init.signal.aborted, true)
+  assert.deepEqual(h.navigation, ['/obrigado/'])
+  h.unmount()
+})
+
+test('status endpoint confirms approval independently of Redis and disables caching', async () => {
+  const route = load('src/app/api/check-payment/route.ts', {
+    mercadopago: { MercadoPagoConfig: class {}, Payment: class { async get({ id: paymentId }) {
+      assert.equal(paymentId, id)
+      return { id: paymentId, status: 'approved', transaction_amount: 69.9 }
+    } } },
+    'next/server': { NextResponse: { json: (body, options) => ({ body, status: options?.status || 200, headers: options?.headers }) } },
+    '@/lib/couponStore': new Proxy({}, { get() { throw Error('Redis unavailable') } }),
+    '@vercel/kv': new Proxy({}, { get() { throw Error('Redis unavailable') } }),
+  }, { process: { env: {} } })
+  const res = await route.GET(new Request(`https://example.test/api/check-payment?id=${id}`))
+  assert.equal(res.status, 200)
+  assert.equal(res.body.status, 'approved')
+  assert.equal(res.headers['Cache-Control'], 'no-store')
 })

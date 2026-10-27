@@ -185,9 +185,9 @@ function CheckoutContent() {
 
         <div className="mx-auto max-w-md">
           <div className="glass rounded-2xl p-6 text-center">
-            <div className="mb-4 text-sm text-white/60">
+            {payment.amount > 0 && <div className="mb-4 text-sm text-white/60">
               Valor: <span className="font-bold text-brand-pink">R$ {payment.amount.toFixed(2)}</span>
-            </div>
+            </div>}
 
             {pixData && <><div className="mx-auto mb-6 flex justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -225,9 +225,14 @@ function CheckoutContent() {
               {approved ? 'Seu pagamento foi confirmado. Continue para acessar o grupo.' : paymentMessage || 'Se já pagou, não faça outro pagamento. Ao voltar a esta página neste navegador, retomaremos a confirmação automaticamente.'}
             </p>
             {approved ? (
-              <a href="/obrigado/" className="touch-target mt-4 rounded-full bg-[#FEA7EC] px-6 py-3 font-century font-bold text-white">
-                Continuar para o grupo
-              </a>
+              <div className="mt-4 flex flex-col gap-3">
+                <a href="/obrigado/" className="touch-target rounded-full bg-[#FEA7EC] px-6 py-3 font-century font-bold text-white">
+                  Continuar para o grupo
+                </a>
+                <a href={ctaConfig.whatsappLink} target="_blank" rel="noopener noreferrer" className="touch-target rounded-full border border-[#FEA7EC] px-6 py-3 font-century font-bold text-[#FEA7EC]">
+                  Entrar no Grupo Exclusivo
+                </a>
+              </div>
             ) : (
               <button type="button" onClick={checkNow} className="touch-target mx-auto mt-4 rounded-full bg-[#FEA7EC] px-6 py-3 font-century font-bold text-white">
                 Já paguei — verificar agora

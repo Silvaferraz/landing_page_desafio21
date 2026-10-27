@@ -22,6 +22,7 @@ export async function GET(request: Request) {
       id: payment.id,
       status: payment.status,
       statusDetail: payment.status_detail,
+      amount: payment.transaction_amount,
     }, { headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
     console.error('Error checking payment:', error)

@@ -9,23 +9,23 @@ export const timelineData: TimelineItem[] = [
   {
     id: 'etapa-1',
     week: 'Semana 1',
-    title: 'Ativação',
+    title: 'Ativação do metabolismo',
     description:
-      'Treinos leves de adaptação, conteúdos motivacionais e integração do grupo.',
+      'Alimentação equilibrada com frutas, verduras e hidratação. Sono de 7 a 9 horas, cardio 5x e musculação 3x na semana.',
   },
   {
     id: 'etapa-2',
     week: 'Semana 2',
-    title: 'Evolução',
+    title: 'Definição muscular',
     description:
-      'Aumento progressivo da intensidade, lives com especialistas convidados da área da saúde e bem estar (nutricionistas, terapeutas e outros) convidados e sorteios.',
+      'Manter os hábitos, incluir proteína em 3 a 4 refeições e reforçar a hidratação. Sono de 7 a 9 horas, cardio 5x e musculação 3x na semana, com mais intensidade e carga.',
   },
   {
     id: 'etapa-3',
     week: 'Semana 3',
-    title: 'Consolidação',
+    title: 'Elevação da autoestima',
     description:
-      'Treinos desafiadores, celebração de conquistas e encerramento com evento especial.',
+      'Manter alimentação, sono e treinos, com foco na redução da retenção de líquidos. Bônus: automassagem e orientações sobre procedimentos estéticos.',
   },
   {
     id: 'etapa-4',
