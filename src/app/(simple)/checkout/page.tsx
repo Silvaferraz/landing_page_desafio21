@@ -12,10 +12,11 @@ type Tab = 'pix' | 'card'
 
 function CheckoutContent() {
   const searchParams = useSearchParams()
-  const { payment, trackPayment, message: paymentMessage, approved, checkNow } = usePaymentConfirmation()
+  const { payment, trackPayment, message: paymentMessage, approved, checkNow, isChecking } = usePaymentConfirmation()
   const statusParam = searchParams.get('status')
 
   const [tab, setTab] = useState<Tab>('pix')
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false)
   const [couponCode, setCouponCode] = useState('')
   const [couponStatus, setCouponStatus] = useState<{
     valid: boolean
@@ -90,6 +91,7 @@ function CheckoutContent() {
         return
       }
       if (res.ok && data.id && data.qrCodeBase64 && data.qrCodeText) {
+        setShowPaymentOptions(false)
         trackPayment({
           id: data.id,
           method: 'pix',
@@ -158,6 +160,7 @@ function CheckoutContent() {
       })
       const data = await res.json()
       if (res.ok && data.id && ['approved', 'pending', 'in_process', 'authorized', 'in_mediation'].includes(data.status)) {
+        setShowPaymentOptions(false)
         trackPayment({ id: data.id, method: 'card', amount: displayPrice }, data.status === 'approved')
         return
       }
@@ -173,7 +176,7 @@ function CheckoutContent() {
     ? couponStatus.discountedPrice
     : paymentConfig.price
 
-  if (payment) {
+  if (payment && (!showPaymentOptions || approved)) {
     return (
       <>
         <div className="mb-8 text-center">
@@ -234,8 +237,24 @@ function CheckoutContent() {
                 </a>
               </div>
             ) : (
-              <button type="button" onClick={checkNow} className="touch-target mx-auto mt-4 rounded-full bg-[#FEA7EC] px-6 py-3 font-century font-bold text-white">
-                Já paguei — verificar agora
+              <button
+                type="button"
+                onClick={checkNow}
+                disabled={isChecking}
+                aria-busy={isChecking}
+                className="touch-target mx-auto mt-4 gap-2 rounded-full bg-[#FEA7EC] px-6 py-3 font-century font-bold text-white disabled:cursor-wait disabled:opacity-60"
+              >
+                {isChecking && <span aria-hidden="true" className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />}
+                {isChecking ? 'Verificando pagamento...' : 'Já paguei — verificar agora'}
+              </button>
+            )}
+            {!approved && (
+              <button
+                type="button"
+                onClick={() => { setShowPaymentOptions(true); setCardError('') }}
+                className="touch-target mx-auto mt-3 rounded-full border border-[#FEA7EC] px-6 py-3 font-century font-bold text-[#FEA7EC] transition-colors hover:bg-[#FEA7EC]/10"
+              >
+                Cancelar e alterar pagamento
               </button>
             )}
             <p className="mt-4 text-xs text-white/60">Número do pagamento: {payment.id}</p>
@@ -251,6 +270,14 @@ function CheckoutContent() {
   return (
     <>
       {paymentMessage && <p role="alert" className="mb-6 rounded-xl bg-yellow-500/10 p-4 text-yellow-300">{paymentMessage}</p>}
+      {payment && showPaymentOptions && (
+        <div role="status" className="mb-6 rounded-xl border border-[#FEA7EC]/30 bg-[#FEA7EC]/10 p-4 text-center text-sm text-white/80">
+          <p>Escolha outra forma de pagamento abaixo. Se já pagou, aguarde a confirmação para evitar pagar novamente.</p>
+          <button type="button" onClick={() => setShowPaymentOptions(false)} className="touch-target mx-auto mt-2 font-bold text-[#FEA7EC] underline">
+            Voltar ao pagamento pendente
+          </button>
+        </div>
+      )}
       {statusParam === 'failure' && (
         <div className="mb-8 rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-center text-red-300">
           O pagamento não foi concluído. Tente novamente.

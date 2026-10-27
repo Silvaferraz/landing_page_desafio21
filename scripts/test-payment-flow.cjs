@@ -109,6 +109,11 @@ function trackingHarness(saved, options = {}) {
   const location = { href: options.href || 'https://example.test/checkout/', replace: path => navigation.push(path) }
   const router = { replace: path => navigation.push(path) }
   const react = {
+    useRef(initial) {
+      const slot = cursor++
+      if (!(slot in slots)) slots[slot] = { current: initial }
+      return slots[slot]
+    },
     useState(initial) {
       const slot = cursor++
       if (!(slot in slots)) slots[slot] = initial
@@ -236,6 +241,29 @@ test('manual verification retries immediately and navigates only after confirmat
   await h.flush()
   assert.equal(h.requests.length, 2)
   assert.deepEqual(h.navigation, ['/obrigado/'])
+  h.unmount()
+})
+
+test('verification shows loading and ignores repeated clicks and polling during the same request', async () => {
+  const h = trackingHarness({ id: 123, method: 'card', amount: 69.9 })
+  await h.flush()
+  assert.equal(h.result.isChecking, false)
+  let finish
+  h.responses.push(new Promise(resolve => { finish = resolve }))
+  h.result.checkNow()
+  h.result.checkNow()
+  h.result.checkNow()
+  h.tick()
+  await h.flush()
+  assert.equal(h.result.isChecking, true)
+  assert.equal(h.requests.length, 2, 'only the initial check and one manual check are sent')
+  finish({ ok: true, json: async () => ({ status: 'pending' }) })
+  await h.flush()
+  assert.equal(h.result.isChecking, false)
+  h.responses.push(new Error('Network error'))
+  h.result.checkNow()
+  await h.flush()
+  assert.equal(h.result.isChecking, false, 'network errors must release the button')
   h.unmount()
 })
 

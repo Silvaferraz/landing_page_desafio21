@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { PENDING_PAYMENT_KEY, parsePendingPayment, paymentFromRecoveryUrl, isFinalPaymentFailure, type PendingPayment } from '@/lib/pendingPayment'
 
 export default function usePaymentConfirmation() {
@@ -8,6 +8,8 @@ export default function usePaymentConfirmation() {
   const [message, setMessage] = useState('')
   const [approved, setApproved] = useState(false)
   const [checkVersion, setCheckVersion] = useState(0)
+  const [isChecking, setIsChecking] = useState(false)
+  const checkRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
     let restored: PendingPayment | null = null
@@ -39,7 +41,7 @@ export default function usePaymentConfirmation() {
     }
   }, [])
 
-  const checkNow = useCallback(() => setCheckVersion(version => version + 1), [])
+  const checkNow = useCallback(() => checkRef.current?.(), [])
 
   useEffect(() => {
     if (!payment || approved) return
@@ -50,6 +52,7 @@ export default function usePaymentConfirmation() {
     const check = async () => {
       if (!active || checking || finished) return
       checking = true
+      setIsChecking(true)
       controller = new AbortController()
       const timeout = window.setTimeout(() => controller?.abort(), 12000)
       try {
@@ -85,8 +88,10 @@ export default function usePaymentConfirmation() {
       } finally {
         window.clearTimeout(timeout)
         checking = false
+        if (active) setIsChecking(false)
       }
     }
+    checkRef.current = () => { void check() }
     void check()
     const interval = window.setInterval(() => { void check() }, 3000)
     // Restart the request: a fetch suspended while the bank app was open may still be hung.
@@ -96,6 +101,8 @@ export default function usePaymentConfirmation() {
     document.addEventListener('visibilitychange', onReturn)
     return () => {
       active = false
+      checkRef.current = null
+      setIsChecking(false)
       controller?.abort()
       window.clearInterval(interval)
       window.removeEventListener('focus', onReturn)
@@ -104,5 +111,5 @@ export default function usePaymentConfirmation() {
     }
   }, [payment, approved, checkVersion])
 
-  return { payment, trackPayment, message, approved, checkNow }
+  return { payment, trackPayment, message, approved, checkNow, isChecking }
 }
