@@ -150,18 +150,4 @@ export const specialists: Specialist[] = [
     objectPosition: '1%',
     badges: ['CREF 038077-G/RS', 'Saúde da Mulher'],
   },
-  {
-    id: 'specialist-2',
-    name: 'Rafael Falk',
-    specialty: 'Nutricionista',
-    bio: 'Nutricionista graduado pela UFN especializando-se em Nutrição Esportiva e Estética. Trabalha com planos personalizados para melhorar desempenho, saúde e composição corporal, sempre com embasamento científico.',
-    image: '/images/rafaelFalk.webp',
-    instagram: 'https://www.instagram.com/rafa.falk/',
-    whatsapp: 'https://wa.me/5555996326861',
-    logo: '/images/logo_rafaelFalk.webp',
-    width: 110,
-    height: 110,
-    objectPosition: '70%',
-    badges: ['CRN 18284D', 'Nutrição Esportiva'],
-  },
 ]

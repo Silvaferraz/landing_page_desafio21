@@ -26,6 +26,7 @@ interface CookieConsentContextValue {
   consent: CookieConsent
   acceptAll: () => void
   rejectAll: () => void
+  openBanner: () => void
   savePreferences: (analytics: boolean, marketing: boolean) => void
   openModal: () => void
   closeModal: () => void
@@ -127,6 +128,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
 
   const openModal = useCallback(() => setModalOpen(true), [])
   const closeModal = useCallback(() => setModalOpen(false), [])
+  const openBanner = useCallback(() => setConsent(defaultConsent), [])
 
   return (
     <CookieConsentContext.Provider
@@ -134,6 +136,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
         consent,
         acceptAll,
         rejectAll,
+        openBanner,
         savePreferences,
         openModal,
         closeModal,

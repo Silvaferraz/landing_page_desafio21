@@ -3,7 +3,7 @@
 import { useCookieConsent } from '@/context/CookieConsentContext'
 
 export default function CookieBanner() {
-  const { consent, acceptAll, rejectAll, openModal } = useCookieConsent()
+  const { consent, acceptAll, rejectAll } = useCookieConsent()
 
   if (consent.status !== 'pending') return null
 
@@ -16,8 +16,8 @@ export default function CookieBanner() {
     >
       <div className="mx-auto flex max-w-5xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <p className="body-text text-sm md:text-base">
-          Utilizamos cookies para melhorar sua experiencia. Ao continuar, voce
-          concorda com nossa{' '}
+          Utilizamos cookies para melhorar sua experiencia. Voce pode aceitar
+          ou recusar os cookies opcionais. Saiba mais em nossa{' '}
           <a
              href="/politica-de-privacidade"
             className="underline hover:text-brand-pink focus-visible:outline-2 focus-visible:outline-brand-pink"
@@ -31,19 +31,13 @@ export default function CookieBanner() {
             onClick={acceptAll}
             className="touch-target rounded-full bg-brand-pink px-6 py-2 font-century font-bold text-dark-blue transition-all hover:scale-105 hover:shadow-pink focus-visible:outline-2 focus-visible:outline-brand-pink"
           >
-            Aceitar Todos
+            Aceitar
           </button>
           <button
             onClick={rejectAll}
             className="touch-target rounded-full border border-white/20 px-6 py-2 font-century text-sm text-white/80 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-brand-pink"
           >
             Recusar
-          </button>
-          <button
-            onClick={openModal}
-            className="touch-target rounded-full border border-white/20 px-6 py-2 font-century text-sm text-white/80 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-brand-pink"
-          >
-            Personalizar
           </button>
         </div>
       </div>

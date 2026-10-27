@@ -23,8 +23,7 @@ export default function PoliticaPrivacidadePage() {
             <p className="body-text text-white/80">
               O <strong>{siteConfig.name}</strong> é um programa de 21 dias
               voltado à saúde e bem-estar feminino, organizado por Selena Rossi
-              (Personal Trainer, CREF 038077-G/RS) e Rafael Falk (Nutricionista,
-              CRN 18284D).
+              (Personal Trainer, CREF 038077-G/RS).
             </p>
             <p className="body-text mt-4 text-white/80">
               Esta Política de Privacidade explica como coletamos, usamos,
